@@ -12,119 +12,117 @@ export { dayjs }
 
 /**
  * 예식 일시 설정
- * Asia/Seoul 타임존 기준으로 설정합니다.
+ * 2027년 3월 13일 오후 3시 30분
  */
-export const WEDDING_DATE = dayjs.tz("2024-08-24 13:00", "Asia/Seoul")
+export const WEDDING_DATE = dayjs.tz("2027-03-13 15:30", "Asia/Seoul")
 
 /**
  * 예식 일시 포맷
  * 분이 0이면 분을 생략하고, 그 외에는 표시합니다.
- * 예: 2024년 8월 24일 토요일 오후 1시
+ * 예: 2027년 3월 13일 토요일 오후 3시 30분
  */
 export const WEDDING_DATE_FORMAT = `YYYY년 MMMM D일 dddd A h시${WEDDING_DATE.minute() === 0 ? "" : " m분"}`
 
 /**
  * 예식 당월 휴무일 (달력 표시용)
- * 예: 8월 15일 광복절
+ * 2027년 3월 1일 삼일절
  */
-export const HOLIDAYS = [15]
+export const HOLIDAYS = [1]
 
 /**
  * 예식 장소 명칭
  */
-export const LOCATION = "서울대학교 연구공원 웨딩홀"
+export const LOCATION = "지타워컨벤션"
 
 /**
  * 예식 장소 상세 주소
  */
-export const LOCATION_ADDRESS = "서울시 관악구 관악로 1, 연구공원 본관 1층"
+export const LOCATION_ADDRESS = "서울시 구로구 디지털로26길 38 G-TOWER 2층"
 
 /**
  * 카카오톡 공유 시 사용할 위치 정보 주소
- * 필요에 따라 LOCATION과 다르게 설정할 수 있습니다.
  */
-export const SHARE_ADDRESS = LOCATION
+export const SHARE_ADDRESS = "서울시 구로구 디지털로26길 38"
 
 /**
  * 카카오톡 공유 시 표시될 위치 제목
  */
-export const SHARE_ADDRESS_TITLE = LOCATION
+export const SHARE_ADDRESS_TITLE = "지타워컨벤션 2층 (그랜드볼룸)"
 
 /**
  * 지도 서비스(네이버, 카카오)에 사용할 좌표 [경도, 위도]
+ * 서울 구로구 디지털로26길 38 (지타워)
  */
-export const WEDDING_HALL_POSITION = [126.9594982, 37.4657134]
+export const WEDDING_HALL_POSITION = [126.895318, 37.479848]
 
 /**
  * 네이버 지도 장소 ID (NMAP_PLACE_ID)
- * 네이버 지도에서 장소 검색 후 URL의 숫자 부분을 입력합니다.
  */
-export const NMAP_PLACE_ID = 13321741
+export const NMAP_PLACE_ID = 1170751996
 
 /**
  * 카카오 지도 장소 ID (KMAP_PLACE_ID)
- * 카카오 지도에서 장소 상세보기 클릭 후 URL의 숫자 부분을 입력합니다.
  */
-export const KMAP_PLACE_ID = 8634826
+export const KMAP_PLACE_ID = 766128031
 
 // 신부 정보 설정
-export const BRIDE_FULLNAME = "정지원"
-export const BRIDE_FIRSTNAME = "지원"
+export const BRIDE_FULLNAME = "김소윤"
+export const BRIDE_FIRSTNAME = "소윤"
 export const BRIDE_TITLE = "장녀"
-export const BRIDE_FATHER = "정상원"
-export const BRIDE_MOTHER = "박윤정"
+export const BRIDE_FATHER = "신부측 아버님"
+export const BRIDE_MOTHER = "신부측 어머님"
 
 /**
- * 신부측 연락처 및 계좌 정보
+ * 신부측 연락처 및 계좌 정보 (추후 실제 정보로 교체)
  */
 export const BRIDE_INFO = [
   {
     relation: "신부",
     name: BRIDE_FULLNAME,
     phone: "010-0000-0000",
-    account: "우리은행 0000000000000",
+    account: "신부 계좌번호 입력",
   },
   {
     relation: "신부 아버지",
     name: BRIDE_FATHER,
     phone: "010-0000-0000",
-    account: "하나은행 00000000000",
+    account: "신부 아버지 계좌번호 입력",
   },
   {
     relation: "신부 어머니",
     name: BRIDE_MOTHER,
     phone: "010-0000-0000",
-    account: "하나은행 00000000000000",
+    account: "신부 어머니 계좌번호 입력",
   },
 ]
 
 // 신랑 정보 설정
-export const GROOM_FULLNAME = "남주호"
-export const GROOM_FIRSTNAME = "주호"
-export const GROOM_TITLE = "차남"
-export const GROOM_FATHER = "남현태"
-export const GROOM_MOTHER = "김현영"
+export const GROOM_FULLNAME = "변승환"
+export const GROOM_FIRSTNAME = "승환"
+export const GROOM_TITLE = "장남"
+export const GROOM_FATHER = "신랑측 아버님"
+export const GROOM_MOTHER = "신랑측 어머님"
 
 /**
- * 신랑측 연락처 및 계좌 정보
+ * 신랑측 연락처 및 계좌 정보 (추후 실제 정보로 교체)
  */
 export const GROOM_INFO = [
   {
     relation: "신랑",
     name: GROOM_FULLNAME,
     phone: "010-0000-0000",
-    account: "하나은행 00000000000000",
+    account: "신랑 계좌번호 입력",
   },
   {
     relation: "신랑 아버지",
     name: GROOM_FATHER,
     phone: "010-0000-0000",
-    account: "신한은행 000000000000",
+    account: "신랑 아버지 계좌번호 입력",
   },
   {
     relation: "신랑 어머니",
     name: GROOM_MOTHER,
     phone: "010-0000-0000",
-    account: "국민은행 000000000000",
+    account: "신랑 어머니 계좌번호 입력",
   },
 ]
