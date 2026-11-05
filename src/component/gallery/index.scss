@@ -124,10 +124,13 @@ $transition-duration: 0.3s;
 
 .all-photo-modal {
   width: 22rem;
+  font-family: var(--app-font);
   .header {
     .title {
+      font-family: var(--app-font);
       text-align: center;
       font-size: 1.2rem;
+      font-weight: 600;
       color: var(--theme-color);
       padding-bottom: 1rem;
     }

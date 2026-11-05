@@ -105,12 +105,18 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   height: 100vh;
+  font-family: var(--app-font);
   &.modal-open {
     overflow-y: hidden;
   }
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: 1rem;
 }
 
 * {
