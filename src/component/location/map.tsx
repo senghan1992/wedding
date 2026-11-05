@@ -37,29 +37,11 @@ export const Map = () => {
       {NAVER_MAP_CLIENT_ID ? (
         <NaverMap />
       ) : (
-        <div
-          className="map-wrapper"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "#f8f9fa",
-            border: "1px solid #eee",
-            borderRadius: "8px",
-            height: "220px",
-            color: "#666",
-            gap: "8px",
-            textAlign: "center",
-            padding: "20px",
-          }}
-        >
-          <MarkerIcon style={{ width: "32px", height: "32px", fill: "#c49a6c" }} />
-          <div style={{ fontWeight: 600, fontSize: "1.05rem", color: "#333" }}>
-            {LOCATION}
-          </div>
-          <div style={{ fontSize: "0.85rem", color: "#777" }}>
-            {LOCATION_ADDRESS}
+        <div className="map-wrapper">
+          <div className="map-placeholder-card">
+            <MarkerIcon className="marker-icon" />
+            <div className="hall-name">{LOCATION} 2층 그랜드볼룸</div>
+            <div className="hall-addr">{LOCATION_ADDRESS}</div>
           </div>
         </div>
       )}

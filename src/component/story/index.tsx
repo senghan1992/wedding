@@ -80,6 +80,7 @@ export const Story = () => {
         {(Object.keys(STORIES) as TabKey[]).map((key) => (
           <button
             key={key}
+            type="button"
             className={`story-tab-btn ${activeTab === key ? "active" : ""}`}
             onClick={() => setActiveTab(key)}
           >

@@ -5,12 +5,11 @@ import { LOCATION, LOCATION_ADDRESS, WEDDING_DATE } from "../const"
  */
 export const getGoogleCalendarUrl = () => {
   const title = encodeURIComponent("변승환 ❤️ 김소윤 결혼식")
-  // 2027-03-13 15:30 -> UTC 형식 YYYYMMDDTHHmmssZ
+  // 2027-03-13 15:30 KST = 2027-03-13 06:30 UTC
   const startUtc = WEDDING_DATE.utc().format("YYYYMMDDTHHmmss[Z]")
-  // 2시간 행사 가정
   const endUtc = WEDDING_DATE.add(2, "hour").utc().format("YYYYMMDDTHHmmss[Z]")
   const details = encodeURIComponent(
-    `변승환 ❤️ 김소윤의 결혼식에 초대합니다.\n\n장소: ${LOCATION} (${LOCATION_ADDRESS})\n일시: 2027년 3월 13일 (토) 오후 3시 30분`,
+    `변승환 ❤️ 김소윤의 결혼식에 소중한 분들을 모십니다.\n\n일시: 2027년 3월 13일 (토) 오후 3시 30분\n장소: ${LOCATION} (2층 그랜드볼룸)\n주소: ${LOCATION_ADDRESS}`,
   )
   const location = encodeURIComponent(`${LOCATION} (${LOCATION_ADDRESS})`)
 
@@ -18,22 +17,21 @@ export const getGoogleCalendarUrl = () => {
 }
 
 /**
- * 스마트폰 / PC용 iCalendar (.ics) 파일 다운로드
- * 아이폰(Apple 캘린더), 갤럭시(삼성 캘린더), 아웃룩 등에서 바로 일정으로 추가됩니다.
+ * 스마트폰 / PC용 iCalendar (.ics) 파일 다운로드 및 캘린더 앱 연동
  */
 export const downloadIcsCalendar = () => {
   const startUtc = WEDDING_DATE.utc().format("YYYYMMDDTHHmmss[Z]")
   const endUtc = WEDDING_DATE.add(2, "hour").utc().format("YYYYMMDDTHHmmss[Z]")
   const nowUtc = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
 
-  const icsContent = [
+  const icsData = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Wedding Invitation//KR",
+    "PRODID:-//ByunAndKim//WeddingInvitation//KO",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:wedding-byun-kim-20270313@wedding`,
+    `UID:wedding-byun-kim-20270313-${Date.now()}@wedding`,
     `DTSTAMP:${nowUtc}`,
     `DTSTART:${startUtc}`,
     `DTEND:${endUtc}`,
@@ -55,11 +53,22 @@ export const downloadIcsCalendar = () => {
     "END:VCALENDAR",
   ].join("\r\n")
 
-  const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" })
-  const link = document.createElement("a")
-  link.href = window.URL.createObjectURL(blob)
-  link.setAttribute("download", "변승환_김소윤_결혼식.ics")
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+  const blob = new Blob([icsData], { type: "text/calendar;charset=utf-8" })
+  const blobUrl = URL.createObjectURL(blob)
+
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+
+  if (isIOS) {
+    // iOS Safari에서는 직접 링크 열기로 캘린더 등록 시트 호출
+    window.location.href = blobUrl
+  } else {
+    const link = document.createElement("a")
+    link.href = blobUrl
+    link.setAttribute("download", "변승환_김소윤_결혼식.ics")
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 10000)
 }

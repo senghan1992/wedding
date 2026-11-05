@@ -41,18 +41,21 @@ export const Location = () => {
       <LazyDiv className="card location-details-card">
         <div className="transport-tab-nav">
           <button
+            type="button"
             className={`tab-btn ${activeTab === "gasan" ? "active" : ""}`}
             onClick={() => setActiveTab("gasan")}
           >
             <span>1·7호선 가산역</span>
           </button>
           <button
+            type="button"
             className={`tab-btn ${activeTab === "guro" ? "active" : ""}`}
             onClick={() => setActiveTab("guro")}
           >
             <span>2호선 구로역</span>
           </button>
           <button
+            type="button"
             className={`tab-btn ${activeTab === "car" ? "active" : ""}`}
             onClick={() => setActiveTab("car")}
           >

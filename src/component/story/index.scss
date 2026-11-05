@@ -37,6 +37,8 @@
     padding: 4px;
     background: #f4eee6;
     border-radius: 24px;
+    position: relative;
+    z-index: 5;
 
     .story-tab-btn {
       flex: 1;
@@ -49,6 +51,8 @@
       border: none;
       background: transparent;
       cursor: pointer;
+      position: relative;
+      z-index: 6;
       font-size: 0.82rem;
       font-weight: 600;
       color: #7d7268;
