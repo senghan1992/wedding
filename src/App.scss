@@ -22,11 +22,30 @@
   --white-color: #ffffff;
   --red-color: #ff0000;
 
-  font-family: "MapoGoldenPier";
+  --app-font: "MaruBuri", serif;
+  font-family: var(--app-font);
   font-size: 20px;
+  letter-spacing: -0.02em;
+  line-height: 1.6;
   @media (max-width: 500px) {
     font-size: 4vw;
   }
+}
+
+:root[data-font="maruburi"] {
+  --app-font: "MaruBuri", serif;
+}
+:root[data-font="kyobohand"] {
+  --app-font: "KyoboHand", cursive, sans-serif;
+}
+:root[data-font="kyobohand2020"] {
+  --app-font: "KyoboHand2020", cursive, sans-serif;
+}
+:root[data-font="ridibatang"] {
+  --app-font: "RIDIBatang", serif;
+}
+:root[data-font="pretendard"] {
+  --app-font: "Pretendard", -apple-system, sans-serif;
 }
 
 @media print {
@@ -74,7 +93,7 @@ $colors: (
 }
 
 button {
-  font-family: "MapoGoldenPier";
+  font-family: inherit;
   font-size: 1rem;
   border: none;
   background-color: transparent;

@@ -9,6 +9,7 @@ import { Information } from "./component/information"
 import { GuestBook } from "./component/guestbook"
 import { LazyDiv } from "./component/lazyDiv"
 import { ShareButton } from "./component/shareButton"
+import { FontSelector } from "./component/fontSelector"
 import { STATIC_ONLY } from "./env"
 
 /**
@@ -54,6 +55,9 @@ function App() {
         {/* 카카오톡/링크 공유 버튼 */}
         <ShareButton />
       </div>
+
+      {/* 폰트 실시간 비교 선택기 (테스트 및 선택용) */}
+      <FontSelector />
     </div>
   )
 }

@@ -1,10 +1,4 @@
-@font-face {
-  font-family: "MapoGoldenPier";
-  src: url("./MapoGoldenPierA.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
+/* 기존 영문 필기체 */
 @font-face {
   font-family: "Allura";
   src: url("./AlluraRegular.woff") format("woff");
@@ -12,3 +6,37 @@
   font-style: normal;
 }
 
+/* 1. 마루 부리 (네이버 화면용 감성 명조체 - 가독성 & 우아함 1위) */
+@font-face {
+  font-family: "MaruBuri";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/MaruBuri-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 2. 교보손글씨 2019 (단정하고 예쁜 손글씨체 - 귀엽고 따뜻하며 가독성 우수) */
+@font-face {
+  font-family: "KyoboHand";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 3. 교보손글씨 2020 박도연체 (정갈한 만년필 손글씨) */
+@font-face {
+  font-family: "KyoboHand2020";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/KyoboHandwriting2020A.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 4. 리디바탕 (전자책 대표 서체 - 차분하고 단아함) */
+@font-face {
+  font-family: "RIDIBatang";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 5. 프리텐다드 (모던하고 트렌디한 깔끔 고딕) */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
