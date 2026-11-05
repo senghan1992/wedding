@@ -49,7 +49,31 @@ type ClickMove = "left" | "right" | null
  */
 export const Gallery = () => {
   const modalState = useState(false)
+  const [selectedDetailIdx, setSelectedDetailIdx] = useState<number | null>(null)
+  const touchStartXRef = useRef<number | null>(null)
   const carouselRef = useRef<HTMLDivElement>({} as HTMLDivElement)
+
+  const handleDetailTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX
+  }
+
+  const handleDetailTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartXRef.current === null || selectedDetailIdx === null) return
+    const touchEndX = e.changedTouches[0].clientX
+    const diff = touchEndX - touchStartXRef.current
+    if (diff > 40) {
+      // 오른쪽으로 스와이프: 이전 사진
+      setSelectedDetailIdx((prev) =>
+        prev !== null ? (prev === 0 ? GALLERY_IMAGES.length - 1 : prev - 1) : null,
+      )
+    } else if (diff < -40) {
+      // 왼쪽으로 스와이프: 다음 사진
+      setSelectedDetailIdx((prev) =>
+        prev !== null ? (prev === GALLERY_IMAGES.length - 1 ? 0 : prev + 1) : null,
+      )
+    }
+    touchStartXRef.current = null
+  }
 
   useEffect(() => {
     // 이미지 프리로드 (Preload)
@@ -399,45 +423,175 @@ export const Gallery = () => {
         <Button onClick={() => modalState[1](true)}>사진 전체보기</Button>
       </LazyDiv>
 
-      {/* 사진 전체보기 모달 */}
+      {/* 모바일 최적화 사진 전체보기 모달 */}
       <Modal
         modalState={modalState}
         className="all-photo-modal"
         closeOnClickBackground={true}
+        showCloseButton={false}
       >
-        <div className="header">
-          <div className="title">사진 전체보기</div>
+        {/* 모바일 바텀시트 상단 핸들 바 */}
+        <div className="sheet-handle-bar">
+          <div className="sheet-handle" />
         </div>
 
-        <div className="content">
-          <div className="photo-list">
-            {GALLERY_IMAGES.map((image, idx) => (
-              <img
-                key={idx}
-                src={image}
-                alt={`${idx}`}
-                draggable={false}
+        {/* 모달 헤더 바 */}
+        <div className="modal-header-bar">
+          {selectedDetailIdx === null ? (
+            <>
+              <div className="header-title-group">
+                <span className="subtitle">WEDDING GALLERY</span>
+                <span className="main-title">
+                  사진 전체보기 <span className="count-badge">{GALLERY_IMAGES.length}</span>
+                </span>
+              </div>
+              <button
+                className="modal-icon-btn close-btn"
                 onClick={() => {
-                  if (statusRef.current === "stationary") {
-                    if (idx !== slideRef.current) {
-                      move(slideRef.current, idx)
-                    }
-                    modalState[1](false)
-                  }
+                  modalState[1](false)
+                  setSelectedDetailIdx(null)
                 }}
-              />
-            ))}
-          </div>
-          <div className="break" />
+                aria-label="닫기"
+              >
+                ✕
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="modal-icon-btn back-btn"
+                onClick={() => setSelectedDetailIdx(null)}
+              >
+                ← 목록
+              </button>
+              <div className="detail-counter">
+                {selectedDetailIdx + 1} / {GALLERY_IMAGES.length}
+              </div>
+              <button
+                className="modal-icon-btn close-btn"
+                onClick={() => {
+                  modalState[1](false)
+                  setSelectedDetailIdx(null)
+                }}
+                aria-label="닫기"
+              >
+                ✕
+              </button>
+            </>
+          )}
         </div>
-        <div className="footer">
-          <Button
-            buttonStyle="style2"
-            className="bg-light-grey-color text-dark-color"
-            onClick={() => modalState[1](false)}
-          >
-            닫기
-          </Button>
+
+        {/* 모달 콘텐츠 영역 */}
+        <div className="modal-body-content">
+          {selectedDetailIdx === null ? (
+            /* 1. 모바일 2열 그리드 뷰 */
+            <div className="grid-view-container">
+              <div className="photo-grid">
+                {GALLERY_IMAGES.map((image, idx) => (
+                  <div
+                    key={idx}
+                    className="grid-item-card"
+                    onClick={() => setSelectedDetailIdx(idx)}
+                  >
+                    <img
+                      src={image}
+                      alt={`웨딩 사진 ${idx + 1}`}
+                      loading="lazy"
+                    />
+                    <div className="item-overlay">
+                      <span className="zoom-hint">크게 보기</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            /* 2. 풀스크린 상세 뷰어 (스와이프 지원) */
+            <div
+              className="detail-view-container"
+              onTouchStart={handleDetailTouchStart}
+              onTouchEnd={handleDetailTouchEnd}
+            >
+              <div className="detail-image-wrapper">
+                <img
+                  src={GALLERY_IMAGES[selectedDetailIdx]}
+                  alt={`웨딩 사진 ${selectedDetailIdx + 1}`}
+                  draggable={false}
+                />
+
+                {/* 이전/다음 네비게이션 버튼 (화면 터치 외 직관적 버튼 제공) */}
+                {GALLERY_IMAGES.length > 1 && (
+                  <>
+                    <button
+                      className="nav-arrow prev"
+                      onClick={() =>
+                        setSelectedDetailIdx((prev) =>
+                          prev !== null
+                            ? prev === 0
+                              ? GALLERY_IMAGES.length - 1
+                              : prev - 1
+                            : null,
+                        )
+                      }
+                      aria-label="이전 사진"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      className="nav-arrow next"
+                      onClick={() =>
+                        setSelectedDetailIdx((prev) =>
+                          prev !== null
+                            ? prev === GALLERY_IMAGES.length - 1
+                              ? 0
+                              : prev + 1
+                            : null,
+                        )
+                      }
+                      aria-label="다음 사진"
+                    >
+                      ›
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* 하단 미니 썸네일 스트립 */}
+              <div className="thumb-strip-scroll">
+                {GALLERY_IMAGES.map((image, idx) => (
+                  <button
+                    key={idx}
+                    className={`thumb-btn ${idx === selectedDetailIdx ? "active" : ""}`}
+                    onClick={() => setSelectedDetailIdx(idx)}
+                  >
+                    <img src={image} alt={`썸네일 ${idx + 1}`} />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* 모달 하단 푸터 바 */}
+        <div className="modal-footer-bar">
+          {selectedDetailIdx === null ? (
+            <button
+              className="full-close-btn"
+              onClick={() => {
+                modalState[1](false)
+                setSelectedDetailIdx(null)
+              }}
+            >
+              닫기
+            </button>
+          ) : (
+            <button
+              className="full-close-btn return-grid-btn"
+              onClick={() => setSelectedDetailIdx(null)}
+            >
+              전체 목록 보기
+            </button>
+          )}
         </div>
       </Modal>
     </>
