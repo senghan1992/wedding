@@ -7,52 +7,65 @@ import {
 } from "../../const"
 import { COVER_IMAGE } from "../../images"
 import { LazyDiv } from "../lazyDiv"
+import "./index.scss"
 
 const DAY_OF_WEEK = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  "SUNDAY",
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
 ]
 
 /**
  * 초대장의 메인 커버 섹션입니다.
- * 예식 일시, 신랑/신부 이름, 장소를 표시합니다.
- *
- * @returns {JSX.Element} 커버 섹션
  */
 export const Cover = () => {
   return (
-    <LazyDiv className="card cover">
-      {/* 상단 날짜 표시 */}
-      <div className="wedding-date">
-        {WEDDING_DATE.format("YYYY")}
-        <div className="divider" />
-        {WEDDING_DATE.format("MM")}
-        <div className="divider" />
-        {WEDDING_DATE.format("DD")}
+    <LazyDiv className="card cover-editorial">
+      {/* 상단 시네마틱 헤더 */}
+      <div className="cover-header-tag">
+        <span className="serif-eyebrow">WEDDING INVITATION</span>
+        <div className="date-badge-row">
+          <span className="date-num">{WEDDING_DATE.format("YYYY. MM. DD")}</span>
+          <span className="dot">·</span>
+          <span className="day-name">{DAY_OF_WEEK[WEDDING_DATE.day()]}</span>
+        </div>
       </div>
-      {/* 요일 표시 (영어) */}
-      <div className="wedding-day-of-week">
-        {DAY_OF_WEEK[WEDDING_DATE.day()]}
+
+      {/* 메인 커버 이미지 (시네마틱 프레임) */}
+      <div className="cover-image-container">
+        <img
+          src={COVER_IMAGE}
+          alt="변승환 ❤️ 김소윤 웨딩 커버 사진"
+          className="main-cover-photo"
+        />
+        <div className="image-soft-gradient" />
       </div>
-      {/* 커버 이미지 */}
-      <div className="image-wrapper">
-        <img src={COVER_IMAGE} alt="sample" />
+
+      {/* 하단 신랑 & 신부 타이틀 */}
+      <div className="cover-bottom-info">
+        <div className="names-row">
+          <span className="name groom">{GROOM_FULLNAME}</span>
+          <span className="and-symbol">&</span>
+          <span className="name bride">{BRIDE_FULLNAME}</span>
+        </div>
+
+        <div className="schedule-box">
+          <p className="full-date-text">
+            {WEDDING_DATE.format("YYYY년 M월 D일 dddd A h시 m분")}
+          </p>
+          <p className="hall-text">{LOCATION} 2층 그랜드볼룸</p>
+        </div>
+
+        {/* 스크롤 다운 가이드 */}
+        <div className="scroll-indicator">
+          <span className="scroll-text">SCROLL</span>
+          <div className="scroll-line" />
+        </div>
       </div>
-      <div className="subtitle">Save the date for the wedding of</div>
-      {/* 이름 표시 */}
-      <div className="names">
-        {GROOM_FULLNAME}
-        <div className="divider" />
-        {BRIDE_FULLNAME}
-      </div>
-      {/* 예식 정보 (포맷팅된 날짜 및 장소) */}
-      <div className="info">{WEDDING_DATE.format(WEDDING_DATE_FORMAT)}</div>
-      <div className="info">{LOCATION}</div>
     </LazyDiv>
   )
 }

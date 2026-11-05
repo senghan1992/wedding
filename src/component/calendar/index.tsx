@@ -3,33 +3,29 @@ import {
   BRIDE_FIRSTNAME,
   GROOM_FIRSTNAME,
   HOLIDAYS,
+  LOCATION,
   WEDDING_DATE,
   WEDDING_DATE_FORMAT,
 } from "../../const"
 import { LazyDiv } from "../lazyDiv"
+import { downloadIcsCalendar, getGoogleCalendarUrl } from "../../utils/calendar"
 
 // 해당 월의 첫 번째 날의 요일과 총 일수를 계산합니다.
 const firstDayOfWeek = WEDDING_DATE.startOf("month").day()
 const daysInMonth = WEDDING_DATE.daysInMonth()
 
 /**
- * 결혼식 날짜를 표시하는 달력과 디데이 카운트다운 컴포넌트입니다.
- *
- * @returns {JSX.Element} 달력 및 카운트다운 섹션
+ * 결혼식 날짜를 표시하는 달력과 디데이 카운트다운, 캘린더 연동 컴포넌트입니다.
  */
 export const Calendar = () => {
-  // 현재 시간과 예식 시간의 차이를 관리합니다.
   const [tsDiff, setTsDiff] = useState(WEDDING_DATE.diff())
+  const [saveSuccess, setSaveSuccess] = useState(false)
 
-  /**
-   * 예식일까지 남은 일수를 계산합니다.
-   */
   const dayDiff = useMemo(() => {
     const dayOffset = WEDDING_DATE.diff(WEDDING_DATE.startOf("day"))
     return Math.ceil((tsDiff - dayOffset) / 1000 / 60 / 60 / 24)
   }, [tsDiff])
 
-  // 매 초마다 시간을 업데이트합니다.
   useEffect(() => {
     const interval = setInterval(() => {
       const diff = WEDDING_DATE.diff()
@@ -37,11 +33,8 @@ export const Calendar = () => {
     }, 1000)
 
     return () => clearInterval(interval)
-  })
+  }, [])
 
-  /**
-   * 남은 시간을 일, 시, 분, 초 단위로 변환합니다.
-   */
   const diffs = useMemo(() => {
     const tsDiff_ = Math.abs(tsDiff)
     const seconds = Math.floor((tsDiff_ % 60000) / 1000)
@@ -53,12 +46,21 @@ export const Calendar = () => {
     return { days, hours, minutes, seconds, isAfter }
   }, [tsDiff])
 
+  const handleIcsDownload = () => {
+    downloadIcsCalendar()
+    setSaveSuccess(true)
+    setTimeout(() => setSaveSuccess(false), 3000)
+  }
+
   return (
     <LazyDiv className="card calendar">
-      <h2 className="english">The Wedding Day</h2>
-      <div className="break" />
-      {/* 예식 일시 표시 */}
-      {WEDDING_DATE.format(WEDDING_DATE_FORMAT)}
+      <div className="section-header">
+        <span className="script-title">The Wedding Day</span>
+        <h3 className="wedding-date-heading">
+          {WEDDING_DATE.format("YYYY년 M월 D일")}
+        </h3>
+        <p className="wedding-time-sub">토요일 오후 3시 30분 · {LOCATION}</p>
+      </div>
 
       {/* 달력 영역 */}
       <div className="calendar-wrapper">
@@ -86,7 +88,7 @@ export const Calendar = () => {
 
         {/* 첫 주 빈 공간 채우기 */}
         {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-          <div key={i} />
+          <div key={`empty-${i}`} />
         ))}
 
         {/* 날짜 표시 */}
@@ -95,21 +97,18 @@ export const Calendar = () => {
           const classes = []
           const isSunday = (i + firstDayOfWeek) % 7 === 0
 
-          // 일요일 또는 지정된 휴무일일 경우 'holiday' 클래스 추가
           if (isSunday || HOLIDAYS.includes(date)) {
             classes.push("holiday")
           }
 
           const isWeddingDate = date === WEDDING_DATE.date()
-
-          // 예식일일 경우 'wedding-date' 클래스 추가
           if (isWeddingDate) {
             classes.push("wedding-date")
           }
 
           return (
             <div
-              key={i}
+              key={`day-${i}`}
               className={classes.length ? classes.join(" ") : undefined}
             >
               <span>{date}</span>
@@ -119,39 +118,73 @@ export const Calendar = () => {
         })}
       </div>
 
-      {/* 카운트다운 영역 */}
+      {/* 실시간 D-Day 카운트다운 영역 */}
       <div className="countdown-wrapper">
-        <div className="countdown">
-          <div className="unit">DAY</div>
-          <div />
-          <div className="unit">HOUR</div>
-          <div />
-          <div className="unit">MIN</div>
-          <div />
-          <div className="unit">SEC</div>
-          <div className="count">{diffs.days}</div>
-          <span>:</span>
-          <div className="count">{diffs.hours}</div>
-          <span>:</span>
-          <div className="count">{diffs.minutes}</div>
-          <span>:</span>
-          <div className="count">{diffs.seconds}</div>
+        <div className="countdown-boxes">
+          <div className="count-box">
+            <span className="num">{diffs.days}</span>
+            <span className="lbl">DAYS</span>
+          </div>
+          <span className="colon">:</span>
+          <div className="count-box">
+            <span className="num">
+              {diffs.hours.toString().padStart(2, "0")}
+            </span>
+            <span className="lbl">HOURS</span>
+          </div>
+          <span className="colon">:</span>
+          <div className="count-box">
+            <span className="num">
+              {diffs.minutes.toString().padStart(2, "0")}
+            </span>
+            <span className="lbl">MINS</span>
+          </div>
+          <span className="colon">:</span>
+          <div className="count-box">
+            <span className="num">
+              {diffs.seconds.toString().padStart(2, "0")}
+            </span>
+            <span className="lbl">SECS</span>
+          </div>
         </div>
-        <div className="message">
-          {GROOM_FIRSTNAME} & {BRIDE_FIRSTNAME}의 결혼식이{" "}
+
+        <div className="dday-message">
+          <span className="couple-names">
+            {GROOM_FIRSTNAME} & {BRIDE_FIRSTNAME}
+          </span>
+          의 특별한 날까지{" "}
           {dayDiff > 0 ? (
-            <>
-              <span className="d-day">{dayDiff}</span>일 남았습니다.
-            </>
+            <span className="highlight">{dayDiff}일</span>
           ) : dayDiff === 0 ? (
-            <>오늘입니다.</>
+            <span className="highlight">오늘입니다!</span>
           ) : (
-            <>
-              <span className="d-day">{-dayDiff}</span>일 지났습니다.
-            </>
+            <span>행복하게 잘 살고 있습니다!</span>
           )}
         </div>
       </div>
+
+      {/* 캘린더 등록 액션 바 */}
+      <div className="calendar-actions">
+        <button className="cal-btn ics-btn" onClick={handleIcsDownload}>
+          <span className="icon">🗓️</span>
+          <span>폰 캘린더에 일정 저장</span>
+        </button>
+        <a
+          href={getGoogleCalendarUrl()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cal-btn google-btn"
+        >
+          <span className="icon">📅</span>
+          <span>Google 캘린더</span>
+        </a>
+      </div>
+
+      {saveSuccess && (
+        <div className="toast-notice">
+          캘린더 파일이 다운로드되었습니다. 열어서 바로 저장해보세요! ✨
+        </div>
+      )}
     </LazyDiv>
   )
 }

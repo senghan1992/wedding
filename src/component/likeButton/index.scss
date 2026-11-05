@@ -1,0 +1,109 @@
+.like-section-card {
+  padding: 1.8rem 1.4rem !important;
+
+  .like-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.1rem;
+
+    .like-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .like-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        letter-spacing: -0.02em;
+      }
+
+      .like-subtitle {
+        font-size: 0.82rem;
+        color: #8c827a;
+      }
+    }
+
+    .heart-button-container {
+      position: relative;
+      width: 100%;
+      max-width: 280px;
+
+      .floating-heart {
+        position: absolute;
+        bottom: 40px;
+        font-size: 1.5rem;
+        pointer-events: none;
+        animation: float-heart-up 1.2s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+        z-index: 10;
+      }
+
+      .big-heart-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 28px;
+        border: 1px solid #ebd9cf;
+        background: linear-gradient(135deg, #ffffff 0%, #fff6f2 100%);
+        box-shadow: 0 4px 14px rgba(184, 134, 110, 0.15);
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+        &:active {
+          transform: scale(0.96);
+          box-shadow: 0 2px 6px rgba(184, 134, 110, 0.1);
+        }
+
+        .heart-emoji {
+          font-size: 1.25rem;
+          animation: heart-pulse 2s infinite ease-in-out;
+        }
+
+        .heart-label {
+          font-size: 0.9rem;
+          font-weight: 700;
+          color: var(--theme-color);
+        }
+
+        .like-count-pill {
+          background: var(--theme-color);
+          color: #ffffff;
+          font-size: 0.78rem;
+          font-weight: 700;
+          padding: 2px 8px;
+          border-radius: 12px;
+          font-variant-numeric: tabular-nums;
+        }
+      }
+    }
+  }
+}
+
+@keyframes float-heart-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-50px) scale(1.2) rotate(-10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(1) rotate(15deg);
+  }
+}
+
+@keyframes heart-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}

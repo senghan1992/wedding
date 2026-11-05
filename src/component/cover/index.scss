@@ -1,58 +1,155 @@
-.cover {
-  .wedding-date {
-    margin-top: 2rem;
-    font-size: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    .divider {
-      background-color: var(--dark-color);
-      width: 1px;
-      height: 0.7rem;
+.cover-editorial {
+  padding: 1.8rem 1.2rem 1.4rem 1.2rem !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .cover-header-tag {
+    text-align: center;
+    margin-bottom: 1.2rem;
+
+    .serif-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--theme-color);
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    .date-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #6a625b;
+      letter-spacing: 0.05em;
+
+      .dot {
+        color: #c4b9ad;
+      }
+
+      .day-name {
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        color: #8c827a;
+      }
     }
   }
 
-  .wedding-day-of-week {
-    font-size: 1.2rem;
-    opacity: 0.7;
-    margin-bottom: 1rem;
-  }
-
-  .image-wrapper {
+  .cover-image-container {
     width: 100%;
-    height: 30rem;
+    position: relative;
+    border-radius: 20px;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    img {
+    box-shadow: 0 8px 24px rgba(44, 40, 37, 0.12);
+    background: #f0ebe2;
+    aspect-ratio: 2 / 3;
+    max-height: 480px;
+
+    .main-cover-photo {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-soft-gradient {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.25), transparent);
+      pointer-events: none;
     }
   }
 
-  .subtitle {
-    font-size: 1.5rem;
-    font-family: "Allura";
-    color: var(--alt-color);
-    margin-top: 1rem;
-  }
-
-  .names {
-    margin-top: 0.5rem;
-    margin-bottom: 0.8rem;
+  .cover-bottom-info {
+    margin-top: 1.4rem;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: 0.7rem;
-    .divider {
-      background-color: var(--dark-color);
-      width: 1px;
-      height: 0.7rem;
+    width: 100%;
+
+    .names-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 0.6rem;
+
+      .name {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        letter-spacing: 0.05em;
+      }
+
+      .and-symbol {
+        font-family: "Allura", cursive;
+        font-size: 1.8rem;
+        color: var(--theme-color);
+        line-height: 1;
+      }
+    }
+
+    .schedule-box {
+      text-align: center;
+      background: #faf7f2;
+      border: 1px solid #ede6dc;
+      padding: 10px 18px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 320px;
+
+      .full-date-text {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--dark-color);
+        margin: 0 0 4px 0;
+      }
+
+      .hall-text {
+        font-size: 0.82rem;
+        color: #7d7268;
+        margin: 0;
+      }
+    }
+
+    .scroll-indicator {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.6;
+      animation: pulse-scroll 2s infinite ease-in-out;
+
+      .scroll-text {
+        font-size: 0.62rem;
+        letter-spacing: 0.2em;
+        color: #8c827a;
+      }
+
+      .scroll-line {
+        width: 1px;
+        height: 22px;
+        background: linear-gradient(to bottom, #8c827a, transparent);
+      }
     }
   }
-  .info {
-    margin-bottom: 0.3rem;
-    opacity: 0.7;
+}
+
+@keyframes pulse-scroll {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translateY(4px);
   }
 }

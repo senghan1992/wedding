@@ -3,8 +3,10 @@ import { Location } from "./component/location"
 import "./App.scss"
 import { BGEffect } from "./component/bgEffect"
 import { Invitation } from "./component/invitation"
+import { Story } from "./component/story"
 import { Calendar } from "./component/calendar"
 import { Gallery } from "./component/gallery"
+import { LikeButton } from "./component/likeButton"
 import { Information } from "./component/information"
 import { GuestBook } from "./component/guestbook"
 import { LazyDiv } from "./component/lazyDiv"
@@ -25,28 +27,36 @@ function App() {
       <BGEffect />
       <div className="card-view">
         <LazyDiv className="card-group">
-          {/* 메인 커버 섹션 */}
+          {/* 1. 메인 커버 섹션 */}
           <Cover />
 
-          {/* 모시는 글 섹션 */}
+          {/* 2. 모시는 글 섹션 */}
           <Invitation />
         </LazyDiv>
 
         <LazyDiv className="card-group">
-          {/* 결혼식 날짜 및 달력 섹션 */}
+          {/* 3. 신랑 & 신부 미니 인터뷰 & 스토리 */}
+          <Story />
+        </LazyDiv>
+
+        <LazyDiv className="card-group">
+          {/* 4. 결혼식 날짜, 달력 및 D-Day 카운트다운 */}
           <Calendar />
 
-          {/* 사진 갤러리 섹션 */}
+          {/* 5. 사진 갤러리 섹션 */}
           <Gallery />
         </LazyDiv>
 
         <LazyDiv className="card-group">
-          {/* 오시는 길 및 지도 섹션 */}
+          {/* 6. 오시는 길 및 셔틀/주차 안내 */}
           <Location />
         </LazyDiv>
 
         <LazyDiv className="card-group">
-          {/* 축의금 및 연락처 정보 섹션 */}
+          {/* 7. 하트 축하하기 인터랙션 */}
+          <LikeButton />
+
+          {/* 8. 축의금 및 연락처 정보 섹션 */}
           <Information />
           {/* 방명록 섹션 (정적 모드가 아닐 때만 표시) */}
           {!STATIC_ONLY && <GuestBook />}
