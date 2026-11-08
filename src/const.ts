@@ -65,12 +65,24 @@ export const NMAP_PLACE_ID = 1170751996
  */
 export const KMAP_PLACE_ID = 766128031
 
+/**
+ * 자석 스크롤(Snap Scroll) 페이지 식별자
+ * 커버의 목차에서 각 섹션으로 이동할 때 사용합니다.
+ */
+export const SECTION_IDS = {
+  cover: "section-cover",
+  invitation: "section-invitation",
+  weddingDay: "section-wedding-day",
+  location: "section-location",
+  information: "section-information",
+} as const
+
 // 신부 정보 설정
 export const BRIDE_FULLNAME = "김소윤"
 export const BRIDE_FIRSTNAME = "소윤"
-export const BRIDE_TITLE = "장녀"
-export const BRIDE_FATHER = "신부측 아버님"
-export const BRIDE_MOTHER = "신부측 어머님"
+export const BRIDE_TITLE = "딸"
+export const BRIDE_FATHER = "김태을"
+export const BRIDE_MOTHER = "이정민"
 
 /**
  * 신부측 연락처 및 계좌 정보 (추후 실제 정보로 교체)
@@ -79,7 +91,7 @@ export const BRIDE_INFO = [
   {
     relation: "신부",
     name: BRIDE_FULLNAME,
-    phone: "010-0000-0000",
+    phone: "010-3999-1796",
     account: "신부 계좌번호 입력",
   },
   {
@@ -99,9 +111,9 @@ export const BRIDE_INFO = [
 // 신랑 정보 설정
 export const GROOM_FULLNAME = "변승환"
 export const GROOM_FIRSTNAME = "승환"
-export const GROOM_TITLE = "장남"
-export const GROOM_FATHER = "신랑측 아버님"
-export const GROOM_MOTHER = "신랑측 어머님"
+export const GROOM_TITLE = "아들"
+export const GROOM_FATHER = "변광섭"
+export const GROOM_MOTHER = "김수정"
 
 /**
  * 신랑측 연락처 및 계좌 정보 (추후 실제 정보로 교체)
@@ -110,8 +122,8 @@ export const GROOM_INFO = [
   {
     relation: "신랑",
     name: GROOM_FULLNAME,
-    phone: "010-0000-0000",
-    account: "신랑 계좌번호 입력",
+    phone: "010-2739-8743",
+    account: "신한은행 110-291-421144",
   },
   {
     relation: "신랑 아버지",

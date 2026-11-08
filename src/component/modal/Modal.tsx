@@ -1,4 +1,4 @@
-import { type PropsWithChildren, useContext } from "react"
+import { type PropsWithChildren, useContext, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { ModalContext } from "./context"
 
@@ -43,6 +43,18 @@ export const Modal = ({
 }: ModalProps) => {
   const { wrapperRef } = useContext(ModalContext)
 
+  // ESC 키 입력 시 모달 닫기
+  useEffect(() => {
+    if (!open) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false)
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [open, setOpen])
+
   // 모달 상태가 false면 렌더링하지 않음
   if (!open) return null
 
@@ -61,16 +73,20 @@ export const Modal = ({
             // 모달 내부 클릭 시 이벤트 전파 중단 (배경 클릭 이벤트 방지)
             e.stopPropagation()
           }}
+          role="dialog"
+          aria-modal="true"
         >
           {showCloseButton && (
             <div className="close-button-wrapper">
               <button
+                type="button"
                 className="close-button"
+                aria-label="닫기"
                 onClick={(e) => {
                   e.stopPropagation()
                   setOpen(false)
                 }}
-              ></button>
+              />
             </div>
           )}
           {children}
@@ -79,3 +95,4 @@ export const Modal = ({
     </Portal>
   )
 }
+

@@ -1,12 +1,40 @@
 .share-button {
+  position: fixed;
+  bottom: 10px;
+  right: 14px;
+  z-index: 90;
+  width: auto;
+  display: flex;
+  justify-content: center;
+
   .ktalk-share {
-    position: relative;
-    z-index: 3;
-    font-size: 0.8rem;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #fee500;
+    color: #191919;
+    padding: 8px 14px;
+    border-radius: 22px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-family: var(--app-font) !important;
+    letter-spacing: 0;
+
     img {
-      width: 0.7rem;
-      height: 0.7rem;
+      width: 1.05rem;
+      height: 1.05rem;
+      display: block;
+    }
+
+    &:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.24);
+    }
+
+    &:active {
+      transform: scale(0.95);
     }
   }
 }

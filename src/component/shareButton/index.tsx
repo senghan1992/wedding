@@ -78,7 +78,7 @@ export const ShareButton = () => {
           })
         }}
       >
-        <img src={ktalkIcon} alt="ktalk-icon" /> 카카오톡으로 공유하기
+        <img src={ktalkIcon} alt="ktalk-icon" /> 공유하기
       </button>
     </LazyDiv>
   )

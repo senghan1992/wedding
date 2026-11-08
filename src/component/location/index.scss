@@ -1,57 +1,66 @@
-.location {
-  padding: 2.2rem 1.4rem 1.6rem 1.4rem !important;
+.location-combined-card {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 1.2rem 1rem !important;
+
+  @media (max-width: 500px) {
+    padding: 1rem 0.85rem !important;
+  }
 
   .section-header {
     text-align: center;
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.35rem;
 
     .script-title {
       font-family: "Allura", cursive;
-      font-size: 2.2rem;
+      font-size: 2rem;
       color: var(--theme-color);
       display: block;
       line-height: 1;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.15rem;
     }
 
     .location-name {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--dark-color);
-      margin: 0 0 0.5rem 0;
+      margin: 0 0 0.3rem 0;
+      letter-spacing: -0.02em;
     }
 
     .addr-badge-group {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: #faf7f2;
       border: 1px solid #ede6dc;
-      padding: 6px 12px;
-      border-radius: 20px;
+      padding: 4px 10px;
+      border-radius: 16px;
       max-width: 100%;
 
       .detail-addr {
-        font-size: 0.8rem;
+        font-size: clamp(0.72rem, 2.4vw, 0.78rem);
         color: #6a625b;
         word-break: keep-all;
+        letter-spacing: -0.01em;
       }
 
       .copy-addr-btn {
-        padding: 3px 8px;
-        border-radius: 12px;
+        padding: 2px 7px;
+        border-radius: 10px;
         background: #ffffff;
         border: 1px solid #dcd4c8;
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         font-weight: 600;
         color: var(--theme-color);
         cursor: pointer;
         white-space: nowrap;
-        transition: all 0.2s ease;
-
-        &:active {
-          transform: scale(0.95);
-        }
+        flex-shrink: 0;
 
         &.copied {
           background: var(--theme-color);
@@ -65,13 +74,16 @@
   /* 지도 영역 */
   .map-wrapper {
     width: 100%;
-    min-height: 150px;
-    border-radius: 16px;
+    flex: 0 0 auto;
+    height: min(28vh, 230px);
+    min-height: 160px;
+    border-radius: 14px;
     overflow: hidden;
     position: relative;
     border: 1px solid #ede6dc;
     background: #faf7f2;
-    margin-top: 0.6rem;
+    margin: 0.2rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 
     .map-placeholder-card {
       width: 100%;
@@ -80,9 +92,12 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 20px 14px;
+      gap: 5px;
+      padding: 10px;
       text-align: center;
+      background-color: #faf7f2;
+      background-image: radial-gradient(#e2d9cd 1px, transparent 1px);
+      background-size: 14px 14px;
 
       .marker-icon {
         width: 22px;
@@ -91,278 +106,236 @@
       }
 
       .hall-name {
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         font-weight: 700;
         color: var(--dark-color);
+        background-color: rgba(255, 255, 255, 0.86);
+        padding: 2px 8px;
+        border-radius: 10px;
       }
 
       .hall-addr {
-        font-size: 0.8rem;
+        font-size: 0.76rem;
         color: #7d7268;
-        line-height: 1.4;
+        background-color: rgba(255, 255, 255, 0.86);
+        padding: 1px 8px;
+        border-radius: 10px;
       }
     }
 
-    .lock {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .map-container {
       width: 100%;
       height: 100%;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      .lock-message {
-        background-color: var(--dark-color);
-        color: var(--white-color);
-        padding: 0.5rem;
-        text-align: center;
-        font-size: 0.8rem;
+    }
+
+    .lock-button-wrapper {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      z-index: 10;
+      .lock-button {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid #dcd4c8;
+        border-radius: 6px;
+        padding: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         svg {
-          display: inline;
-          width: 0.8rem;
-          height: 0.8rem;
-          fill: var(--white-color);
+          width: 14px;
+          height: 14px;
         }
       }
     }
-
-    .lock-button {
-      position: absolute;
-      top: 3%;
-      left: 3%;
-      width: 32px;
-      height: 32px;
-      z-index: 201;
-      background-color: var(--white-color);
-      border: 1px solid var(--dark-grey-color);
-      border-radius: 6px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      svg {
-        width: 16px;
-        height: 16px;
-        fill: var(--dark-color);
-      }
-      &.unlocked {
-        opacity: 0.5;
-      }
-    }
-
-    .map-inner {
-      height: 100%;
-      width: 100%;
-    }
   }
 
-  /* 하단 길찾기 내비게이션 버튼 3종 */
+  /* 내비게이션 앱 버튼 */
   .navigation {
     display: flex;
-    gap: 8px;
-    margin-top: 10px;
+    justify-content: center;
+    gap: 6px;
+    margin: 0.25rem 0;
     width: 100%;
 
     button {
       flex: 1;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      height: 42px;
-      border-radius: 12px;
+      gap: 4px;
+      padding: 7px 6px;
+      background: #faf7f2;
       border: 1px solid #ede6dc;
-      background: #ffffff;
-      font-size: 0.8rem;
+      border-radius: 10px;
+      font-size: clamp(0.72rem, 2.5vw, 0.78rem);
       font-weight: 600;
-      color: #554e48;
+      color: #554e47;
       cursor: pointer;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
-      transition: all 0.15s ease;
+      white-space: nowrap;
 
       img {
-        width: 18px !important;
-        height: 18px !important;
-        object-fit: contain !important;
+        width: 16px;
+        height: 16px;
+        border-radius: 3px;
         flex-shrink: 0;
       }
-
-      &:active {
-        background: #f7f3ed;
-        transform: scale(0.98);
-      }
     }
   }
-}
 
-.location-details-card {
-  padding: 1.6rem 1.4rem !important;
-
-  .transport-tab-nav {
+  /* 교통편 안내 */
+  .transport-section {
+    width: 100%;
+    margin-top: 0.2rem;
+    flex: 0 0 auto;
     display: flex;
-    gap: 6px;
-    background: #f4eee6;
-    padding: 4px;
-    border-radius: 20px;
-    margin-bottom: 1.2rem;
-    position: relative;
-    z-index: 5;
+    flex-direction: column;
 
-    .tab-btn {
-      flex: 1;
-      padding: 8px 10px;
-      border-radius: 16px;
-      border: none;
-      background: transparent;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #7d7268;
-      cursor: pointer;
-      position: relative;
-      z-index: 6;
-      transition: all 0.2s ease;
+    .transport-tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      background: #f4eee6;
+      padding: 3px;
+      border-radius: 12px;
+      margin-bottom: 0.45rem;
+      flex-shrink: 0;
 
-      &.active {
-        background: #ffffff;
-        color: var(--dark-color);
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      .tab-btn {
+        flex: 1;
+        padding: 6px 6px;
+        border-radius: 9px;
+        border: none;
+        background: transparent;
+        font-size: clamp(0.72rem, 2.5vw, 0.78rem);
+        font-weight: 600;
+        color: #7d7268;
+        cursor: pointer;
+        white-space: nowrap;
+        letter-spacing: -0.01em;
+
+        &.active {
+          background: #ffffff;
+          color: var(--dark-color);
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        }
       }
     }
-  }
 
-  .transport-tab-content {
-    background: #faf7f2;
-    border: 1px solid #ede6dc;
-    border-radius: 16px;
-    padding: 1.2rem;
-
-    .tab-pane {
+    .transport-tab-content {
+      background: #faf7f2;
+      border: 1px solid #ede6dc;
+      border-radius: 14px;
+      padding: 0.85rem 0.9rem;
+      text-align: left;
+      flex: 0 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      text-align: left;
+      gap: 0.55rem;
+
+      .tab-note {
+        font-size: 0.72rem;
+        color: #8c827a;
+        padding-top: 0.5rem;
+        border-top: 1px dashed #e2d9cd;
+        word-break: keep-all;
+
+        b {
+          color: var(--theme-color);
+        }
+      }
 
       .subway-badge {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
         margin-bottom: 0.4rem;
 
         .line {
-          font-size: 0.68rem;
+          font-size: 0.64rem;
           font-weight: 700;
           color: #ffffff;
-          padding: 2px 6px;
-          border-radius: 10px;
+          padding: 1px 6px;
+          border-radius: 8px;
 
           &.line-1 {
-            background-color: #0052a4;
+            background: #0d347f;
           }
           &.line-7 {
-            background-color: #747f00;
+            background: #747f00;
           }
           &.line-2 {
-            background-color: #00a84d;
+            background: #3cb44a;
           }
         }
 
         .station {
-          font-size: 0.92rem;
+          font-size: 0.8rem;
           font-weight: 700;
           color: var(--dark-color);
+          margin-left: 2px;
         }
       }
 
       .step-list {
         display: flex;
         flex-direction: column;
-        gap: 0.7rem;
+        gap: 6px;
 
         .step-item {
           display: flex;
-          align-items: flex-start;
-          gap: 10px;
-          background: #ffffff;
-          padding: 10px 12px;
-          border-radius: 12px;
-          border: 1px solid #eee8df;
+          align-items: baseline;
+          gap: 6px;
+          font-size: 0.8rem;
+          color: #4f4740;
 
           .step-num {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #ede6dc;
-            color: #6a625b;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: 800;
+            color: #ffffff;
+            background: var(--theme-color);
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            margin-top: 2px;
           }
 
           .step-desc {
-            font-size: 0.85rem;
-            color: #4a4440;
-            line-height: 1.5;
-
-            b {
-              color: var(--dark-color);
-            }
-
-            .tip-note {
-              font-size: 0.75rem;
-              color: var(--theme-color);
-              font-weight: 600;
-              margin-top: 3px;
-            }
-          }
-
-          &.highlight-step {
-            border-color: #e8ded2;
-            background: #fdfcf9;
-
-            .step-num {
-              background: var(--theme-color);
-              color: #ffffff;
-            }
+            line-height: 1.45;
+            word-break: keep-all;
           }
         }
       }
 
-      &.car-pane {
-        gap: 0.8rem;
+      .car-pane {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
 
         .car-info-box {
-          background: #ffffff;
-          padding: 12px 14px;
-          border-radius: 14px;
-          border: 1px solid #eee8df;
-
           .car-title {
-            font-size: 0.88rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--dark-color);
-            margin-bottom: 4px;
+            margin-bottom: 2px;
+            white-space: nowrap;
           }
-
           .car-text {
-            font-size: 0.84rem;
-            color: #554e48;
-            line-height: 1.6;
+            font-size: 0.78rem;
+            color: #4f4740;
+            line-height: 1.45;
+            word-break: keep-all;
 
             .car-subtext {
-              font-size: 0.75rem;
+              display: block;
+              font-size: 0.72rem;
               color: #8c827a;
               margin-top: 2px;
+              word-break: keep-all;
             }
-          }
-
-          &.parking-highlight {
-            border-left: 3px solid var(--theme-color);
-            background: #fdfcf9;
           }
         }
       }

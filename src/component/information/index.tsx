@@ -1,153 +1,142 @@
 import { useState } from "react"
-import { BRIDE_INFO, GROOM_INFO } from "../../const"
-import { STATIC_ONLY } from "../../env"
-import { Button } from "../button"
+import { BRIDE_INFO, GROOM_INFO, GROOM_FULLNAME, BRIDE_FULLNAME } from "../../const"
 import { LazyDiv } from "../lazyDiv"
-import { Modal } from "../modal"
-import { AttendanceInfo } from "./attendance"
+import "./index.scss"
 
 /**
- * 식사 정보 안내 컴포넌트입니다.
- */
-export const Information1 = () => {
-  return (
-    <>
-      <h2 className="english">Information</h2>
-      <div className="info-card">
-        <div className="label">식사 안내</div>
-        <div className="content">
-          식사시간: 12시 30분 ~ 14시 30분
-          <br />
-          장소: 지하 1층 연회장
-        </div>
-      </div>
-    </>
-  )
-}
-
-/**
- * 축의금 계좌번호 안내 컴포넌트입니다.
- * 신랑측, 신부측 계좌번호를 모달로 보여줍니다.
- */
-export const Information2 = () => {
-  const donationModalState = useState(false)
-  const [isGroom, setIsGroom] = useState(true)
-
-  return (
-    <>
-      <div className="info-card">
-        <div className="label">마음 전하기</div>
-        <div className="content">
-          참석이 어려워 직접 축하해주지 못하는
-          <br />
-          분들을 위해 계좌번호를 기재하였습니다.
-          <br />
-          넓은 마음으로 양해 부탁드립니다.
-        </div>
-
-        <div className="break" />
-
-        <Button
-          style={{ width: "100%" }}
-          onClick={() => {
-            donationModalState[1](true)
-            setIsGroom(true)
-          }}
-        >
-          신랑측 계좌번호 보기
-        </Button>
-        <div className="break" />
-        <Button
-          style={{ width: "100%" }}
-          onClick={() => {
-            donationModalState[1](true)
-            setIsGroom(false)
-          }}
-        >
-          신부측 계좌번호 보기
-        </Button>
-      </div>
-
-      {/* 계좌 정보 모달 */}
-      <Modal
-        modalState={donationModalState}
-        className="donation-modal"
-        closeOnClickBackground={true}
-      >
-        <div className="header">
-          <div className="title">
-            {isGroom ? "신랑측 계좌번호" : "신부측 계좌번호"}
-          </div>
-        </div>
-        <div className="content">
-          {(isGroom ? GROOM_INFO : BRIDE_INFO)
-            .filter(({ account }) => !!account)
-            .map(({ relation, name, account }) => (
-              <div className="account-info" key={relation}>
-                <div>
-                  <div className="name">
-                    <span className="relation">{relation}</span> {name}
-                  </div>
-                  <div>{account}</div>
-                </div>
-                <Button
-                  className="copy-button"
-                  onClick={async () => {
-                    if (account) {
-                      try {
-                        // 계좌번호 복사 기능
-                        await navigator.clipboard.writeText(account)
-                        alert(account + "\n복사되었습니다.")
-                      } catch {
-                        alert("복사에 실패했습니다.")
-                      }
-                    }
-                  }}
-                >
-                  복사하기
-                </Button>
-              </div>
-            ))}
-        </div>
-        <div className="footer">
-          <Button
-            buttonStyle="style2"
-            className="bg-light-grey-color text-dark-color"
-            onClick={() => donationModalState[1](false)}
-          >
-            닫기
-          </Button>
-        </div>
-      </Modal>
-    </>
-  )
-}
-
-/**
- * 정보 안내(식사, 축의금, 참석의사)를 통합하여 표시하는 컴포넌트입니다.
- *
- * @returns {JSX.Element} 정보 안내 섹션
+ * 마음 전하실 곳 & 식사 안내 섹션입니다.
+ * 팝업 모달 대신 화면 안에서 신랑측/신부측 계좌번호를 탭으로 바로 확인하고 복사할 수 있으며,
+ * 예식 당일 식사 안내와 정중한 감사 인사를 여유로운 레이아웃으로 담았습니다.
  */
 export const Information = () => {
-  // 정적 모드일 경우 참석 의사 전달 기능을 제외합니다.
-  if (STATIC_ONLY) {
-    return (
-      <>
-        <LazyDiv className="card information">
-          <Information1 />
-        </LazyDiv>
-        <LazyDiv className="card information">
-          <Information2 />
-        </LazyDiv>
-      </>
-    )
+  const [activeTab, setActiveTab] = useState<"groom" | "bride">("groom")
+  const [copiedKey, setCopiedKey] = useState<string | null>(null)
+
+  const handleCopyAccount = async (account: string, key: string) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(account)
+      } else {
+        const textArea = document.createElement("textarea")
+        textArea.value = account
+        document.body.appendChild(textArea)
+        textArea.select()
+        document.execCommand("copy")
+        document.body.removeChild(textArea)
+      }
+      setCopiedKey(key)
+      setTimeout(() => {
+        setCopiedKey(null)
+      }, 2000)
+    } catch {
+      alert("계좌번호 복사에 실패했습니다.")
+    }
   }
 
+  const currentInfoList = activeTab === "groom" ? GROOM_INFO : BRIDE_INFO
+
   return (
-    <LazyDiv className="card information">
-      <Information1 />
-      <Information2 />
-      <AttendanceInfo />
+    <LazyDiv className="card information-page-card">
+      {/* 1. 상단 섹션 타이틀 */}
+      <div className="info-header">
+        <span className="script-subtitle">Information</span>
+        <h2 className="info-main-title">마음 전하실 곳</h2>
+        <p className="info-sub-desc">
+          참석이 어려워 축하의 마음을 전하고자 하시는 분들을 위해
+          <br />
+          계좌번호를 안내해 드립니다.
+        </p>
+      </div>
+
+      {/* 2. 신랑측 / 신부측 계좌 인페이지 탭 & 카드 리스트 */}
+      <div className="account-inpage-section">
+        {/* 세그먼트 탭 */}
+        <div className="account-tab-control" role="tablist">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "groom"}
+            className={`tab-btn ${activeTab === "groom" ? "active" : ""}`}
+            onClick={() => setActiveTab("groom")}
+          >
+            신랑측 계좌번호
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "bride"}
+            className={`tab-btn ${activeTab === "bride" ? "active" : ""}`}
+            onClick={() => setActiveTab("bride")}
+          >
+            신부측 계좌번호
+          </button>
+        </div>
+
+        {/* 계좌 카드 목록 */}
+        <div className="account-cards-list">
+          {currentInfoList
+            .filter(({ account }) => !!account)
+            .map(({ relation, name, account }) => {
+              const isCopied = copiedKey === relation
+              return (
+                <div className="account-card-item" key={relation}>
+                  <div className="account-meta">
+                    <div className="person-row">
+                      <span className="relation-tag">{relation}</span>
+                      <span className="person-name">{name}</span>
+                    </div>
+                    <div className="account-number-text">{account}</div>
+                  </div>
+                  <button
+                    type="button"
+                    className={`account-copy-btn ${isCopied ? "copied" : ""}`}
+                    onClick={() => handleCopyAccount(account, relation)}
+                    aria-label={`${name} 계좌번호 복사`}
+                  >
+                    {isCopied ? "복사 완료 ✓" : "복사하기"}
+                  </button>
+                </div>
+              )
+            })}
+        </div>
+      </div>
+
+      {/* 3. 식사 안내 카드 (정갈한 2-Cell 다이닝 가이드) */}
+      <div className="dining-guide-card">
+        <div className="dining-card-header">
+          <span className="dining-eyebrow">RECEPTION & DINING</span>
+          <h3 className="dining-main-title">식사 및 연회 안내</h3>
+        </div>
+
+        <div className="dining-fact-grid">
+          <div className="dining-fact-item">
+            <span className="fact-label">식사 시간</span>
+            <span className="fact-value">15:00 ~ 17:00</span>
+            <span className="fact-sub">예식 30분 전부터 이용 가능</span>
+          </div>
+          <div className="dining-fact-item">
+            <span className="fact-label">연회 장소</span>
+            <span className="fact-value highlight">G-TOWER 1층</span>
+            <span className="fact-sub">2층 본식 후 1층 이동</span>
+          </div>
+        </div>
+
+        <p className="dining-note">
+          소중한 걸음 해주신 분들을 위해 정갈하고 맛있는 식사를 정성껏 준비했습니다.
+        </p>
+      </div>
+
+      {/* 4. 하단 감사 인사 클로징 */}
+      <div className="info-closing">
+        <p className="closing-message">
+          저희 두 사람의 새로운 시작을 축복해 주시는
+          <br />
+          모든 분들께 진심으로 감사드립니다.
+        </p>
+        <p className="closing-names">
+          신랑 <strong>{GROOM_FULLNAME}</strong> · 신부 <strong>{BRIDE_FULLNAME}</strong> 올림
+        </p>
+      </div>
     </LazyDiv>
   )
 }

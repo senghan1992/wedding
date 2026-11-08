@@ -1,74 +1,341 @@
 .invitation {
-  .content {
-    margin-top: 0.8rem;
-    margin-bottom: 0.8rem;
-    font-size: 0.9rem;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 1.5rem 1.2rem !important;
+
+  @media (max-width: 500px) {
+    padding: 1.2rem 1rem !important;
   }
 
-  .name {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-    .relation {
-      font-size: 0.75rem;
-      opacity: 0.7;
+  .invitation-top {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 
-      .relation-name {
-        display: inline-block;
-        min-width: 2em;
+  .invitation-bottom {
+    width: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  h2.english {
+    margin-bottom: 0.4rem;
+  }
+
+  /* 초대 문구 헤드라인 */
+  .invitation-headline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 0.3rem;
+
+    .headline-names {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark-color);
+      letter-spacing: 0.02em;
+    }
+
+    .headline-date {
+      font-size: 0.8rem;
+      color: #8c827a;
+      letter-spacing: 0.02em;
+    }
+  }
+
+  .invitation-text {
+    margin: 0.2rem 0;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 2.05;
+
+    p {
+      margin: 0.25rem 0;
+      font-size: clamp(0.9rem, 2.9vw, 1.02rem);
+      color: #3e3833;
+      word-break: keep-all;
+      letter-spacing: -0.02em;
+
+      &.highlight {
+        margin-top: 0.8rem;
+        color: var(--theme-color);
+        font-weight: 600;
+        font-size: clamp(0.92rem, 3.1vw, 1.04rem);
+        word-break: keep-all;
       }
+    }
+  }
+
+  .name-block {
+    margin: 0.3rem 0;
+    padding: 0.9rem 1.1rem;
+    background: #faf7f2;
+    border-radius: 16px;
+    border: 1px solid #ede7dc;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+
+    .name {
+      font-size: clamp(0.88rem, 2.8vw, 0.98rem);
+      color: #4a4540;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+
+      .relation {
+        font-size: 0.82rem;
+        color: #8c827a;
+        margin: 0 0.25rem;
+
+        .relation-name {
+          display: inline-block;
+          min-width: 1.8em;
+        }
+      }
+
+      .person-name {
+        font-weight: 700;
+        color: var(--dark-color);
+        font-size: clamp(0.98rem, 3.1vw, 1.08rem);
+      }
+    }
+  }
+
+  /* 핵심 요약 그리드 (날짜 · 시간 · 장소 · 주차) */
+  .fact-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    margin: 0.2rem 0;
+
+    .fact-item {
+      background: #faf7f2;
+      border: 1px solid #ede7dc;
+      border-radius: 14px;
+      padding: 0.65rem 0.35rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      box-sizing: border-box;
+
+      .fact-label {
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        color: var(--theme-color);
+        white-space: nowrap;
+      }
+
+      .fact-value {
+        font-size: clamp(0.88rem, 3.2vw, 1.02rem);
+        font-weight: 700;
+        color: var(--dark-color);
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+        white-space: nowrap;
+      }
+
+      .fact-note {
+        font-size: clamp(0.66rem, 2.4vw, 0.72rem);
+        color: #8c827a;
+        text-align: center;
+        white-space: nowrap;
+        letter-spacing: -0.02em;
+      }
+    }
+  }
+
+  .btn-wrapper {
+    width: 100%;
+    margin-top: 0.3rem;
+    button {
+      width: 100%;
     }
   }
 }
 
 .contact-modal {
-  width: 22rem;
+  width: min(23rem, 92vw);
 
   .header {
     .title-group {
       text-align: center;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid #ede5da;
+
       .title {
-        font-size: 1.2rem;
+        font-size: 1.15rem;
         color: var(--theme-color);
-        padding: 0.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
       }
       .subtitle {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+        color: #8c827a;
+        margin-top: 0.2rem;
       }
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--dark-grey-color);
     }
   }
 
   .content {
-    padding: 0.7rem;
-    padding-bottom: 1rem;
+    padding: 0.6rem 0.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
 
-    .contact-info {
-      padding: 1rem 0.7rem;
-      display: grid;
-      grid-template-columns: 8rem 7rem 1fr;
-      row-gap: 0.5rem;
+    .contact-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
 
-      .relation {
-        opacity: 0.7;
-      }
+      .group-header {
+        display: flex;
+        align-items: center;
+        padding: 0 0.2rem;
 
-      .icon {
-        fill: var(--dark-color);
-        margin: 0 0.5rem 0 0.5rem;
-        opacity: 0.7;
-        width: 1rem;
-        height: 1rem;
-        &.flip {
-          transform: scaleX(-1);
+        .group-badge {
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          padding: 2px 8px;
+          border-radius: 6px;
+
+          &.groom {
+            background-color: #f1ede6;
+            color: #68574a;
+            border: 1px solid #ded6cc;
+          }
+
+          &.bride {
+            background-color: #fbf0ec;
+            color: #8a5749;
+            border: 1px solid #eddcd4;
+          }
         }
       }
+
+      .contact-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+
+        .contact-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: #faf7f2;
+          border: 1px solid #ede6dc;
+          border-radius: 12px;
+          padding: 0.55rem 0.75rem;
+          transition: background-color 0.15s ease;
+
+          .contact-person {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            white-space: nowrap;
+
+            .relation {
+              font-size: 0.78rem;
+              color: #8c827a;
+              white-space: nowrap;
+            }
+
+            .person-name {
+              font-size: 0.92rem;
+              font-weight: 700;
+              color: var(--dark-color);
+              letter-spacing: -0.01em;
+              white-space: nowrap;
+            }
+          }
+
+          .contact-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+
+            .action-btn {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              gap: 3px;
+              padding: 4px 9px;
+              border-radius: 16px;
+              border: 1px solid #dfd4c7;
+              background-color: #ffffff;
+              cursor: pointer;
+              transition: all 0.15s ease;
+              color: #5d534b;
+              font-size: 0.74rem;
+              font-weight: 600;
+              white-space: nowrap;
+
+              .icon {
+                width: 0.82rem;
+                height: 0.82rem;
+                fill: var(--theme-color);
+
+                &.flip {
+                  transform: scaleX(-1);
+                }
+              }
+
+              &:hover {
+                background-color: #f5eee6;
+                border-color: var(--theme-color);
+                color: var(--theme-color);
+              }
+
+              &:active {
+                transform: scale(0.94);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .contact-divider {
+      height: 1px;
+      background-color: #f0e8de;
+      margin: 0.1rem 0;
     }
   }
 
   .footer {
     display: flex;
     flex-direction: column;
+    margin-top: 0.4rem;
+
+    .contact-close-btn {
+      width: 100%;
+      padding: 0.6rem;
+      font-size: 0.88rem;
+    }
   }
 }

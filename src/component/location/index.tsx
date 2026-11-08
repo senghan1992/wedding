@@ -17,28 +17,26 @@ export const Location = () => {
   }
 
   return (
-    <>
-      <LazyDiv className="card location">
-        <div className="section-header">
-          <span className="script-title">Location</span>
-          <h3 className="location-name">{LOCATION}</h3>
-          <div className="addr-badge-group">
-            <span className="detail-addr">{LOCATION_ADDRESS}</span>
-            <button
-              className={`copy-addr-btn ${copied ? "copied" : ""}`}
-              onClick={handleCopyAddress}
-            >
-              {copied ? "✓ 복사완료" : "주소 복사"}
-            </button>
-          </div>
+    <LazyDiv className="card location-combined-card">
+      <div className="section-header">
+        <span className="script-title">Location</span>
+        <h3 className="location-name">{LOCATION}</h3>
+        <div className="addr-badge-group">
+          <span className="detail-addr">{LOCATION_ADDRESS}</span>
+          <button
+            className={`copy-addr-btn ${copied ? "copied" : ""}`}
+            onClick={handleCopyAddress}
+          >
+            {copied ? "✓ 복사완료" : "주소 복사"}
+          </button>
         </div>
+      </div>
 
-        {/* 지도 컴포넌트 */}
-        <Map />
-      </LazyDiv>
+      {/* 지도 컴포넌트 */}
+      <Map />
 
       {/* 교통편 탭형 안내 섹션 */}
-      <LazyDiv className="card location-details-card">
+      <div className="transport-section">
         <div className="transport-tab-nav">
           <button
             type="button"
@@ -75,18 +73,24 @@ export const Location = () => {
                 <div className="step-item">
                   <span className="step-num">1</span>
                   <div className="step-desc">
-                    <b>5번 출구</b>로 나와서 <b>약 20m 직진</b>
+                    <b>5번 출구</b> 나와서 <b>약 20m 직진</b>
                   </div>
                 </div>
                 <div className="step-item highlight-step">
                   <span className="step-num">2</span>
                   <div className="step-desc">
-                    <b>지타워컨벤션 전용 셔틀버스</b> 탑승
-                    <div className="tip-note">
-                      ※ 예식 당일 15분 간격 순환 운행
-                    </div>
+                    <b>지타워컨벤션 전용 셔틀버스</b> 탑승 (15분 간격 운행)
                   </div>
                 </div>
+                <div className="step-item">
+                  <span className="step-num">3</span>
+                  <div className="step-desc">
+                    <b>2층 그랜드볼룸</b>에서 예식이 열립니다
+                  </div>
+                </div>
+              </div>
+              <div className="tab-note">
+                하객 주차 <b>2시간 무료</b> · 지하주차장 1,400대
               </div>
             </div>
           )}
@@ -101,18 +105,24 @@ export const Location = () => {
                 <div className="step-item">
                   <span className="step-num">1</span>
                   <div className="step-desc">
-                    <b>4번 출구</b>로 나와서 <b>약 100m 직진</b>
+                    <b>4번 출구</b> 나와서 <b>약 100m 직진</b>
                   </div>
                 </div>
                 <div className="step-item highlight-step">
                   <span className="step-num">2</span>
                   <div className="step-desc">
-                    <b>지타워컨벤션 전용 셔틀버스</b> 탑승
-                    <div className="tip-note">
-                      ※ 예식 당일 15분 간격 순환 운행
-                    </div>
+                    <b>지타워컨벤션 전용 셔틀버스</b> 탑승 (15분 간격 운행)
                   </div>
                 </div>
+                <div className="step-item">
+                  <span className="step-num">3</span>
+                  <div className="step-desc">
+                    <b>2층 그랜드볼룸</b>에서 예식이 열립니다
+                  </div>
+                </div>
+              </div>
+              <div className="tab-note">
+                하객 주차 <b>2시간 무료</b> · 지하주차장 1,400대
               </div>
             </div>
           )}
@@ -122,25 +132,24 @@ export const Location = () => {
               <div className="car-info-box">
                 <div className="car-title">🚗 네비게이션 검색</div>
                 <div className="car-text">
-                  <b>지타워컨벤션</b> 또는 <b>서울시 구로구 디지털로26길 38</b>
-                  <div className="car-subtext">
-                    디지털로26길 진입 후 <b>Gate 1, Gate 2</b> 이용
-                  </div>
+                  <b>지타워컨벤션</b> (서울 구로구 디지털로26길 38)
+                  <span className="car-subtext">디지털로26길 진입 후 Gate 1, 2 이용</span>
                 </div>
               </div>
 
               <div className="car-info-box parking-highlight">
-                <div className="car-title">🅿️ 주차 꿀팁 (1,400대 동시 주차)</div>
+                <div className="car-title">🅿️ 1,400대 동시 주차</div>
                 <div className="car-text">
-                  단독 지하주차장이 매우 넓고 쾌적합니다.
-                  <br />
-                  하객 여러분께 <b>2시간 무료 주차</b>를 지원합니다.
+                  넓고 쾌적한 지하주차장 · 하객 <b>2시간 무료 주차</b>
                 </div>
+              </div>
+              <div className="tab-note">
+                네비에 <b>지타워컨벤션</b> 검색 후 디지털로26길로 진입해 주세요
               </div>
             </div>
           )}
         </div>
-      </LazyDiv>
-    </>
+      </div>
+    </LazyDiv>
   )
 }

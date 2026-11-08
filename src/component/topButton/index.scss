@@ -1,0 +1,46 @@
+/* 맨 위로 올라가기 버튼 (왼쪽 고정) */
+.top-button {
+  position: fixed;
+  bottom: 14px;
+  left: 14px;
+  z-index: 90;
+  width: 1.95rem;
+  height: 1.95rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--theme-color);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 2px 10px rgba(60, 48, 38, 0.12);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.3rem);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease,
+    background-color 0.2s ease, color 0.2s ease;
+
+  &.top-button-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  &:hover {
+    background-color: var(--theme-color);
+    color: var(--light-color);
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+
+  svg {
+    width: 0.85rem;
+    height: 0.85rem;
+    display: block;
+  }
+}

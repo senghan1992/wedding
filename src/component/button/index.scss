@@ -1,22 +1,45 @@
 button.button {
-  font-family: inherit;
+  font-family: var(--app-font) !important;
   background: none;
   position: relative;
   z-index: 3;
-  font-size: 1rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: -0.02em;
 
   &.button-style-1 {
-    background-color: var(--white-color);
-    border: solid 0.05rem var(--alt-color);
-    color: var(--alt-color);
-    border-radius: 0.3rem;
-    padding: 0.5rem 1rem;
+    background-color: #faf7f2;
+    border: 1px solid #d4c2b8;
+    color: var(--theme-color);
+    padding: 0.65rem 1.2rem;
+
+    &:hover {
+      background-color: var(--theme-color);
+      color: #ffffff;
+      border-color: var(--theme-color);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
   }
 
   &.button-style-2 {
-    background-color: var(--alt-color);
-    color: var(--white-color);
-    border: none;
-    padding: 0.5rem 1rem;
+    background-color: var(--theme-color);
+    color: #ffffff;
+    border: 1px solid var(--theme-color);
+    padding: 0.65rem 1.2rem;
+    box-shadow: 0 2px 8px rgba(156, 111, 90, 0.2);
+
+    &:hover {
+      background-color: var(--theme-color-hover);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
   }
 }

@@ -1,73 +1,98 @@
+import { useEffect, useState } from "react"
 import { Cover } from "./component/cover"
 import { Location } from "./component/location"
 import "./App.scss"
 import { BGEffect } from "./component/bgEffect"
 import { Invitation } from "./component/invitation"
-import { Story } from "./component/story"
-import { Calendar } from "./component/calendar"
-import { Gallery } from "./component/gallery"
-import { LikeButton } from "./component/likeButton"
+import { WeddingDay } from "./component/weddingDay"
 import { Information } from "./component/information"
-import { GuestBook } from "./component/guestbook"
-import { LazyDiv } from "./component/lazyDiv"
 import { ShareButton } from "./component/shareButton"
-import { FontSelector } from "./component/fontSelector"
-import { STATIC_ONLY } from "./env"
+import { TopButton } from "./component/topButton"
+import { SECTION_IDS } from "./const"
+
+/**
+ * 페이지 진행률을 나타내는 상단 진행 바 컴포넌트입니다.
+ * 자석 스크롤에서 현재 몇 번째 페이지인지 시각적으로 알려줍니다.
+ */
+const PageProgress = () => {
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const viewport = document.querySelector(".snap-scroll-viewport")
+    if (!viewport) return
+
+    const update = () => {
+      const max = viewport.scrollHeight - viewport.clientHeight
+      setProgress(max > 0 ? viewport.scrollTop / max : 0)
+    }
+
+    viewport.addEventListener("scroll", update, { passive: true })
+    update()
+    return () => viewport.removeEventListener("scroll", update)
+  }, [])
+
+  return (
+    <div className="page-progress" aria-hidden="true">
+      <div
+        className="page-progress-bar"
+        style={{ transform: `scaleX(${progress})` }}
+      />
+    </div>
+  )
+}
 
 /**
  * 메인 애플리케이션 컴포넌트입니다.
- * 초대장의 각 섹션을 조합하여 화면을 구성합니다.
+ *
+ * [자석 효과(Snap Scroll)]:
+ * 한 화면(100dvh)에 하나의 페이지만 정확히 담기도록 섹션을 구성했습니다.
+ * 내용이 많지 않은 섹션은 서로 묶어 한 페이지로 합쳤고,
+ * 각 페이지는 여백이 남지 않도록 콘텐츠가 화면 높이를 가득 채웁니다.
  *
  * @returns {JSX.Element} 애플리케이션 화면
  */
 function App() {
   return (
     <div className="background">
-      {/* 배경 애니메이션 효과 (예: 꽃잎 내리기) */}
+      {/* 배경 애니메이션 효과 (꽃잎 내리기) */}
       <BGEffect />
-      <div className="card-view">
-        <LazyDiv className="card-group">
-          {/* 1. 메인 커버 섹션 */}
+
+      {/* 현재 페이지 진행률 */}
+      <PageProgress />
+
+      {/* 자석 효과(Snap Scroll) 메인 뷰포트 컨테이너 */}
+      <main className="snap-scroll-viewport">
+        {/* 1. 메인 커버 섹션 */}
+        <section id={SECTION_IDS.cover} className="snap-page-container">
           <Cover />
+        </section>
 
-          {/* 2. 모시는 글 섹션 */}
+        {/* 2. 모시는 글 및 하객 요약 안내 */}
+        <section id={SECTION_IDS.invitation} className="snap-page-container">
           <Invitation />
-        </LazyDiv>
+        </section>
 
-        <LazyDiv className="card-group">
-          {/* 3. 신랑 & 신부 미니 인터뷰 & 스토리 */}
-          <Story />
-        </LazyDiv>
+        {/* 3. 웨딩 화보 갤러리 및 D-Day 카운트 (Our Moments) */}
+        <section id={SECTION_IDS.weddingDay} className="snap-page-container">
+          <WeddingDay />
+        </section>
 
-        <LazyDiv className="card-group">
-          {/* 4. 결혼식 날짜, 달력 및 D-Day 카운트다운 */}
-          <Calendar />
-
-          {/* 5. 사진 갤러리 섹션 */}
-          <Gallery />
-        </LazyDiv>
-
-        <LazyDiv className="card-group">
-          {/* 6. 오시는 길 및 셔틀/주차 안내 */}
+        {/* 4. 오시는 길 및 지도/교통편 안내 */}
+        <section id={SECTION_IDS.location} className="snap-page-container">
           <Location />
-        </LazyDiv>
+        </section>
 
-        <LazyDiv className="card-group">
-          {/* 7. 하트 축하하기 인터랙션 */}
-          <LikeButton />
-
-          {/* 8. 축의금 및 연락처 정보 섹션 */}
+        {/* 5. 마음 전하실 곳 & 식사 안내 */}
+        <section id={SECTION_IDS.information} className="snap-page-container">
           <Information />
-          {/* 방명록 섹션 (정적 모드가 아닐 때만 표시) */}
-          {!STATIC_ONLY && <GuestBook />}
-        </LazyDiv>
+        </section>
+      </main>
 
-        {/* 카카오톡/링크 공유 버튼 */}
-        <ShareButton />
-      </div>
+      {/* 카카오톡 / 링크 공유 플로팅 버튼 */}
+      <ShareButton />
 
-      {/* 폰트 실시간 비교 선택기 (테스트 및 선택용) */}
-      <FontSelector />
+      {/* 맨 위로 올라가기 버튼 (왼쪽 고정) */}
+      <TopButton />
     </div>
   )
 }

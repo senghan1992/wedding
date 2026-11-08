@@ -1,190 +1,314 @@
-.information {
-  .info-card {
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-    padding: 2rem 1rem 1rem 1rem;
+.information-page-card {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 1.25rem 1.1rem !important;
+  text-align: center;
 
-    position: relative;
-    border: 1px solid var(--alt-color);
-    border-radius: 0.5rem;
-    .label {
-      position: absolute;
-      left: 50%;
-      top: -1rem;
-      transform: translateX(-50%);
-      padding: 0.5rem 2rem 0.5rem 2rem;
-      border-radius: 1rem;
-      background-color: var(--alt-bg-color);
-      border: 1px solid var(--alt-color);
-    }
-  }
-  .content {
-    line-height: 1.9;
-    font-size: 0.9rem;
-  }
-}
-
-.donation-modal {
-  width: 22rem;
-
-  .header {
-    .title {
-      text-align: center;
-      font-size: 1.2rem;
-      color: var(--theme-color);
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--dark-grey-color);
-    }
-  }
-  .content {
-    padding: 0 0.7rem 0.7rem 0.7rem;
-
-    .account-info {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      .name {
-        margin-bottom: 0.3rem;
-        .relation {
-          opacity: 0.7;
-        }
-      }
-      .copy-button {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
-      }
-    }
+  @media (max-width: 500px) {
+    padding: 1.05rem 0.95rem !important;
   }
 
-  .footer {
+  /* 1. 상단 섹션 헤더 */
+  .info-header {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+
+    .script-subtitle {
+      font-family: "Allura", cursive;
+      font-size: clamp(1.4rem, 4.2vh, 1.95rem);
+      color: var(--theme-color);
+      display: block;
+      line-height: 1.05;
+    }
+
+    .info-main-title {
+      font-size: clamp(1.2rem, 3.4vh, 1.48rem);
+      font-weight: 700;
+      color: var(--dark-color);
+      margin: 1px 0 0 0;
+      letter-spacing: -0.01em;
+    }
+
+    .info-sub-desc {
+      font-size: 0.78rem;
+      color: #7d7268;
+      margin: 3px 0 0 0;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+      word-break: keep-all;
+    }
   }
-}
 
-.attendance-form-modal {
-  width: 22rem;
+  /* 2. 신랑측 / 신부측 계좌 인페이지 섹션 (Modal 없음) */
+  .account-inpage-section {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin: clamp(0.2rem, 1vh, 0.45rem) 0;
 
-  .form {
-    .header {
-      .title {
-        text-align: center;
-        font-size: 1.2rem;
-        color: var(--theme-color);
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--dark-grey-color);
+    /* 세그먼트 탭 */
+    .account-tab-control {
+      display: flex;
+      background: #f4ede5;
+      padding: 3px;
+      border-radius: 14px;
+      gap: 3px;
+
+      .tab-btn {
+        flex: 1;
+        padding: 0.5rem 0.6rem;
+        border: none;
+        background: transparent;
+        border-radius: 11px;
+        font-family: inherit;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #7d7369;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+        &.active {
+          background: #ffffff;
+          color: var(--theme-color);
+          font-weight: 700;
+          box-shadow: 0 2px 8px rgba(60, 48, 38, 0.08);
+        }
+
+        &:active {
+          transform: scale(0.98);
+        }
       }
     }
 
-    .content {
-      padding: 0 1rem 1rem 1rem;
-
+    /* 계좌 카드 목록 */
+    .account-cards-list {
       display: flex;
       flex-direction: column;
-      margin-top: 1rem;
-      gap: 1.5rem;
+      gap: 6px;
 
-      .input-group {
+      .account-card-item {
         display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
+        align-items: center;
+        justify-content: space-between;
+        background: #faf7f2;
+        border: 1px solid #ede6dc;
+        border-radius: 14px;
+        padding: 0.65rem 0.85rem;
+        gap: 8px;
+        text-align: left;
+        transition: background-color 0.15s ease;
 
-        .input {
-          display: flex;
-          flex-direction: column;
-        }
-        .select-input {
-          display: flex;
-          flex-direction: row;
+        .account-meta {
+          flex: 1;
+          min-width: 0;
 
-          label {
-            width: 100%;
-            span {
-              padding: 0.4rem;
-              display: inline-block;
-              text-align: center;
-              width: 100%;
-              background-color: var(--light-grey-color);
+          .person-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 2px;
+            white-space: nowrap;
+
+            .relation-tag {
+              font-size: 0.72rem;
+              font-weight: 700;
+              color: #7b6657;
+              background: #ede6dc;
+              padding: 2px 6px;
+              border-radius: 6px;
+              white-space: nowrap;
             }
-            input {
-              &:checked + span {
-                border: 2px solid var(--alt-color);
-              }
-              & + span {
-                border: 2px solid var(--light-grey-color);
-              }
+
+            .person-name {
+              font-size: 0.92rem;
+              font-weight: 700;
+              color: var(--dark-color);
+              white-space: nowrap;
             }
+          }
+
+          .account-number-text {
+            font-size: clamp(0.76rem, 2.7vw, 0.82rem);
+            color: #554e47;
+            word-break: keep-all;
+            line-height: 1.35;
+            letter-spacing: -0.01em;
           }
         }
 
-        .radio-input {
-          display: flex;
-          flex-direction: row;
-          justify-content: left;
-          gap: 2rem;
-        }
-
-        input {
-          padding: 0.5rem;
-          margin-bottom: 0.5rem;
-          border: 1px solid var(--light-grey-color);
-          border-radius: 0.3rem;
+        .account-copy-btn {
+          font-size: 0.76rem;
+          font-weight: 600;
+          padding: 0.45rem 0.75rem;
+          white-space: nowrap;
+          border-radius: 12px;
+          border: 1px solid #dfd4c7;
+          background: #ffffff;
+          color: var(--theme-color);
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
           font-family: inherit;
-          font-size: 0.8rem;
+          flex-shrink: 0;
+
+          &:hover {
+            background: #f7efe7;
+            border-color: var(--theme-color);
+          }
+
+          &:active {
+            transform: scale(0.95);
+          }
+
+          &.copied {
+            background: var(--theme-color);
+            color: #ffffff;
+            border-color: var(--theme-color);
+            box-shadow: 0 2px 6px rgba(156, 111, 90, 0.25);
+          }
+        }
+      }
+    }
+  }
+
+  /* 3. 식사 안내 카드 (정갈한 2-Cell 다이닝 가이드) */
+  .dining-guide-card {
+    width: 100%;
+    max-width: 380px;
+    background: #faf7f2;
+    border: 1px solid #ede6dc;
+    border-radius: 16px;
+    padding: 0.8rem 0.9rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(60, 48, 38, 0.02);
+
+    .dining-card-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+
+      .dining-eyebrow {
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        color: var(--theme-color);
+        line-height: 1;
+      }
+
+      .dining-main-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin: 1px 0 0 0;
+        letter-spacing: -0.01em;
+      }
+    }
+
+    .dining-fact-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+      margin: 0.25rem 0;
+
+      .dining-fact-item {
+        background: #ffffff;
+        border: 1px solid #ebdcd0;
+        border-radius: 12px;
+        padding: 0.65rem 0.45rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        box-shadow: 0 1px 4px rgba(60, 48, 38, 0.02);
+        box-sizing: border-box;
+
+        .fact-label {
+          font-size: 0.68rem;
+          font-weight: 700;
+          color: #8c827a;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+        }
+
+        .fact-value {
+          font-size: clamp(0.92rem, 3.2vw, 1.05rem);
+          font-weight: 700;
+          color: var(--dark-color);
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+          line-height: 1.25;
+
+          &.highlight {
+            color: var(--theme-color);
+          }
+        }
+
+        .fact-sub {
+          font-size: clamp(0.64rem, 2.3vw, 0.7rem);
+          color: #9c9288;
+          white-space: nowrap;
+          letter-spacing: -0.01em;
         }
       }
     }
 
-    .footer {
-      display: flex;
-      flex-direction: row;
-      button {
-        width: 100%;
-      }
-    }
-  }
-}
-
-.attendance-info-modal {
-  width: 22rem;
-
-  .header {
-    .title {
-      text-align: center;
-      font-size: 1.2rem;
-      color: var(--theme-color);
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--dark-grey-color);
+    .dining-note {
+      font-size: 0.74rem;
+      color: #7d7268;
+      margin: 0;
+      letter-spacing: -0.01em;
+      line-height: 1.45;
+      word-break: keep-all;
     }
   }
 
-  .content {
-    padding: 1.5rem 1rem 1.5rem 1rem;
-    .info-message {
-      text-align: center;
-      line-height: 1.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px dotted var(--dark-grey-color);
-    }
-    .wedding-info {
-      padding-top: 1.5rem;
-      padding-left: 2rem;
-      line-height: 1.5rem;
-      svg {
-        width: 0.8rem;
-        height: 0.8rem;
-      }
-    }
-  }
-
-  .footer {
+  /* 4. 하단 감사 인사 클로징 */
+  .info-closing {
+    width: 100%;
+    max-width: 380px;
     display: flex;
-    flex-direction: row;
-    button {
-      width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+
+    .closing-message {
+      font-size: 0.78rem;
+      color: #7d7268;
+      line-height: 1.5;
+      margin: 0;
+      letter-spacing: -0.01em;
+      word-break: keep-all;
+    }
+
+    .closing-names {
+      font-size: 0.84rem;
+      color: var(--dark-color);
+      margin: 2px 0 0 0;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+
+      strong {
+        color: var(--theme-color);
+        font-weight: 700;
+      }
     }
   }
 }

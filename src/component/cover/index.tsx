@@ -2,8 +2,8 @@ import {
   BRIDE_FULLNAME,
   GROOM_FULLNAME,
   LOCATION,
+  SECTION_IDS,
   WEDDING_DATE,
-  WEDDING_DATE_FORMAT,
 } from "../../const"
 import { COVER_IMAGE } from "../../images"
 import { LazyDiv } from "../lazyDiv"
@@ -17,6 +17,17 @@ const DAY_OF_WEEK = [
   "THURSDAY",
   "FRIDAY",
   "SATURDAY",
+]
+
+/**
+ * 커버 목차 항목
+ * 각 항목을 누르면 자석 스크롤의 해당 페이지로 이동합니다.
+ */
+const CONTENTS = [
+  { label: "모시는 글", targetId: SECTION_IDS.invitation },
+  { label: "웨딩 갤러리", targetId: SECTION_IDS.weddingDay },
+  { label: "오시는 길", targetId: SECTION_IDS.location },
+  { label: "마음 전하실 곳", targetId: SECTION_IDS.information },
 ]
 
 /**
@@ -59,12 +70,33 @@ export const Cover = () => {
           </p>
           <p className="hall-text">{LOCATION} 2층 그랜드볼룸</p>
         </div>
+      </div>
 
-        {/* 스크롤 다운 가이드 */}
-        <div className="scroll-indicator">
-          <span className="scroll-text">SCROLL</span>
-          <div className="scroll-line" />
+      {/* 커버 목차 (각 페이지로 바로 이동) */}
+      <nav className="cover-contents" aria-label="초대장 목차">
+        <span className="contents-label">CONTENTS</span>
+        <div className="contents-list">
+          {CONTENTS.map(({ label, targetId }) => (
+            <button
+              key={targetId}
+              type="button"
+              className="contents-chip"
+              onClick={() => {
+                document
+                  .getElementById(targetId)
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" })
+              }}
+            >
+              {label}
+            </button>
+          ))}
         </div>
+      </nav>
+
+      {/* 스크롤 다운 가이드 */}
+      <div className="scroll-indicator">
+        <span className="scroll-text">SCROLL</span>
+        <div className="scroll-line" />
       </div>
     </LazyDiv>
   )
