@@ -4,11 +4,9 @@ import { useContext, useEffect } from "react"
 import { StoreContext } from "./context"
 import { KAKAO_SDK_JS_KEY, NAVER_MAP_CLIENT_ID } from "../../env"
 
-const baseUrl = import.meta.env.BASE_URL
-
 // 네이버 지도 및 카카오 SDK를 로드하기 위한 외부 스크립트 URL (신규 네이버 Maps API 공식 규격: ncpKeyId)
 const NAVER_MAP_URL = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_CLIENT_ID}`
-const KAKAO_SDK_URL = `${baseUrl}/kakao_js_sdk/2.7.1/kakao.min.js`
+const KAKAO_SDK_URL = "https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
 
 /**
  * 네이버 지도 SDK를 로드하고 사용할 수 있게 해주는 Hook입니다.
@@ -75,19 +73,52 @@ export const useKakao = () => {
       return
     }
 
+    // 이미 전역에 Kakao 객체가 로드되어 있는 경우
+    if ((window as any).Kakao) {
+      if (!(window as any).Kakao.isInitialized()) {
+        try {
+          ;(window as any).Kakao.init(KAKAO_SDK_JS_KEY)
+        } catch (e) {
+          console.error("Kakao init error:", e)
+        }
+      }
+      setKakao((window as any).Kakao)
+      return
+    }
+
     // 스크립트가 아직 로드되지 않았으면 동적으로 추가
-    if (!document.querySelector(`script[src="${KAKAO_SDK_URL}"]`)) {
-      const script = document.createElement("script")
-      script.addEventListener("load", () => {
-        // 카카오 SDK 초기화
+    const existingScript = document.querySelector(
+      `script[src*="kakao_js_sdk"]`,
+    ) as HTMLScriptElement | null
+
+    if (existingScript) {
+      const handleLoad = () => {
+        if ((window as any).Kakao) {
+          if (!(window as any).Kakao.isInitialized()) {
+            ;(window as any).Kakao.init(KAKAO_SDK_JS_KEY)
+          }
+          setKakao((window as any).Kakao)
+        }
+      }
+      existingScript.addEventListener("load", handleLoad)
+      return () => existingScript.removeEventListener("load", handleLoad)
+    }
+
+    const script = document.createElement("script")
+    script.src = KAKAO_SDK_URL
+    script.async = true
+    script.addEventListener("load", () => {
+      if ((window as any).Kakao) {
         if (!(window as any).Kakao.isInitialized()) {
           ;(window as any).Kakao.init(KAKAO_SDK_JS_KEY)
         }
         setKakao((window as any).Kakao)
-      })
-      script.src = KAKAO_SDK_URL
-      document.head.appendChild(script)
-    }
+      }
+    })
+    script.addEventListener("error", (e) => {
+      console.error("Failed to load Kakao SDK from CDN:", e)
+    })
+    document.head.appendChild(script)
   }, [setKakao])
 
   return kakao

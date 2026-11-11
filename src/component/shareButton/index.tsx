@@ -1,85 +1,136 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react"
 import {
   BRIDE_FULLNAME,
   GROOM_FULLNAME,
   LOCATION,
-  SHARE_ADDRESS,
-  SHARE_ADDRESS_TITLE,
   WEDDING_DATE,
   WEDDING_DATE_FORMAT,
 } from "../../const"
 import ktalkIcon from "../../icons/ktalk-icon.png"
 import { LazyDiv } from "../lazyDiv"
 import { useKakao } from "../store"
+import "./index.scss"
 
 const baseUrl = import.meta.env.BASE_URL
 
 /**
- * 카카오톡으로 초대장을 공유할 수 있는 버튼 컴포넌트입니다.
- *
- * @returns {JSX.Element} 공유 버튼 섹션
+ * 카카오톡 초대장 공유 및 링크 공유 컴포넌트입니다.
+ * 1) 카카오 SDK 사용 가능한 경우 카카오톡 공식 피드 카드로 공유
+ * 2) 카카오 SDK 미지원 또는 오류 시 모바일 시스템 기본 공유(Web Share API)
+ * 3) 미지원 환경에서는 클립보드에 초대장 링크를 즉시 복사하고 토스트 안내
  */
 export const ShareButton = () => {
   const kakao = useKakao()
-  return (
-    <LazyDiv className="footer share-button">
-      <button
-        className="ktalk-share"
-        onClick={() => {
-          // 카카오 SDK 로드 전이면 무시
-          if (!kakao) {
-            return
-          }
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
 
-          // 카카오톡 공유 전송 (위치 기반 템플릿 사용)
-          kakao.Share.sendDefault({
-            objectType: "location",
-            address: SHARE_ADDRESS,
-            addressTitle: SHARE_ADDRESS_TITLE,
-            content: {
-              title: `${GROOM_FULLNAME} ❤️ ${BRIDE_FULLNAME}의 결혼식에 초대합니다.`,
-              description:
-                WEDDING_DATE.format(WEDDING_DATE_FORMAT) + "\n" + LOCATION,
-              imageUrl:
-                window.location.protocol +
-                "//" +
-                window.location.host +
-                baseUrl +
-                "/preview_image.png",
+  const showToast = (msg: string) => {
+    setToastMessage(msg)
+    setTimeout(() => {
+      setToastMessage(null)
+    }, 3000)
+  }
+
+  const handleShare = async () => {
+    const shareTitle = `${GROOM_FULLNAME} ❤️ ${BRIDE_FULLNAME}의 결혼식에 초대합니다.`
+    const shareDesc = `${WEDDING_DATE.format(WEDDING_DATE_FORMAT)}\n${LOCATION} 2층 그랜드볼룸`
+    const cleanBase = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`
+    const currentUrl = `${window.location.origin}${cleanBase}`
+    const previewImgUrl = `${window.location.origin}${cleanBase}preview_image.png`
+
+    // 1. 카카오 SDK가 정상 로드 및 초기화된 경우 카카오톡 피드 카드 전송
+    if (kakao?.Share?.sendDefault) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: shareTitle,
+            description: shareDesc,
+            imageUrl: previewImgUrl,
+            link: {
+              mobileWebUrl: currentUrl,
+              webUrl: currentUrl,
+            },
+          },
+          buttons: [
+            {
+              title: "모바일 청첩장 보기",
               link: {
-                mobileWebUrl:
-                  window.location.protocol +
-                  "//" +
-                  window.location.host +
-                  baseUrl,
-                webUrl:
-                  window.location.protocol +
-                  "//" +
-                  window.location.host +
-                  baseUrl,
+                mobileWebUrl: currentUrl,
+                webUrl: currentUrl,
               },
             },
-            buttons: [
-              {
-                title: "초대장 보기",
-                link: {
-                  mobileWebUrl:
-                    window.location.protocol +
-                    "//" +
-                    window.location.host +
-                    baseUrl,
-                  webUrl:
-                    window.location.protocol +
-                    "//" +
-                    window.location.host +
-                    baseUrl,
-                },
+            {
+              title: "오시는 길 안내",
+              link: {
+                mobileWebUrl: `${currentUrl}#section-location`,
+                webUrl: `${currentUrl}#section-location`,
               },
-            ],
-          })
-        }}
-      >
-        <img src={ktalkIcon} alt="ktalk-icon" /> 공유하기
-      </button>
-    </LazyDiv>
+            },
+          ],
+        })
+        return
+      } catch (err) {
+        console.warn("Kakao share failed, switching to fallback:", err)
+      }
+    }
+
+    // 2. 모바일 Web Share API (시스템 기본 공유 창: 카카오톡, 메시지 등)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: `${shareTitle}\n${shareDesc}`,
+          url: currentUrl,
+        })
+        return
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          console.warn("Web share failed:", err)
+        } else {
+          return
+        }
+      }
+    }
+
+    // 3. 최후 수단: 클립보드 URL 복사 및 토스트 피드백
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(currentUrl)
+      } else {
+        const textarea = document.createElement("textarea")
+        textarea.value = currentUrl
+        document.body.appendChild(textarea)
+        textarea.select()
+        document.execCommand("copy")
+        document.body.removeChild(textarea)
+      }
+      showToast("청첩장 링크가 복사되었습니다! ✨")
+    } catch {
+      alert("링크 복사에 실패했습니다.")
+    }
+  }
+
+  return (
+    <>
+      <LazyDiv className="footer share-button">
+        <button
+          type="button"
+          className="ktalk-share"
+          onClick={handleShare}
+          aria-label="청첩장 공유하기"
+        >
+          <img src={ktalkIcon} alt="ktalk-icon" />
+          <span>공유하기</span>
+        </button>
+      </LazyDiv>
+
+      {/* 링크 복사 토스트 알림 */}
+      {toastMessage && (
+        <div className="share-toast" role="status">
+          {toastMessage}
+        </div>
+      )}
+    </>
   )
 }
