@@ -12,9 +12,18 @@
     padding: 1rem 0.85rem !important;
   }
 
+  @media (max-height: 700px) {
+    padding: 0.85rem 0.8rem !important;
+    gap: 0.2rem;
+  }
+
   .section-header {
     text-align: center;
     margin-bottom: 0.35rem;
+
+    @media (max-height: 700px) {
+      margin-bottom: 0.15rem;
+    }
 
     .script-title {
       font-family: "Allura", cursive;
@@ -23,6 +32,11 @@
       display: block;
       line-height: 1;
       margin-bottom: 0.15rem;
+
+      @media (max-height: 700px) {
+        font-size: 1.6rem;
+        margin-bottom: 0.05rem;
+      }
     }
 
     .location-name {
@@ -31,6 +45,11 @@
       color: var(--dark-color);
       margin: 0 0 0.3rem 0;
       letter-spacing: -0.02em;
+
+      @media (max-height: 700px) {
+        font-size: 1.05rem;
+        margin: 0 0 0.15rem 0;
+      }
     }
 
     .addr-badge-group {
@@ -84,6 +103,12 @@
     background: #faf7f2;
     margin: 0.2rem 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+
+    @media (max-height: 700px) {
+      height: clamp(130px, 22vh, 175px);
+      min-height: 120px;
+      margin: 0.1rem 0;
+    }
 
     .map-placeholder-card {
       width: 100%;

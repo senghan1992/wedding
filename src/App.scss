@@ -199,8 +199,6 @@ button {
       height: 100dvh;
       min-height: 100vh;
       min-height: 100dvh;
-      max-height: 100vh;
-      max-height: 100dvh;
       scroll-snap-align: start;
       scroll-snap-stop: always;
       display: flex;
@@ -209,12 +207,16 @@ button {
       align-items: center;
       box-sizing: border-box;
       /* 하단 공유 버튼 영역을 비워둬서 콘텐츠가 가려지지 않도록 함 */
-      padding: 12px 14px 58px;
+      padding: 10px 12px 54px;
       position: relative;
       overflow: hidden;
 
       @media (max-width: 500px) {
-        padding: 10px 8px 54px;
+        padding: 8px 8px 50px;
+      }
+
+      @media (max-height: 680px) {
+        padding: 6px 6px 46px;
       }
 
       /* 각 섹션 프리미엄 카드 */
@@ -231,12 +233,23 @@ button {
         flex-direction: column;
         position: relative;
         box-sizing: border-box;
-        overflow: hidden;
-        padding: 1.6rem 1.3rem;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        padding: 1.4rem 1.2rem;
 
         @media (max-width: 500px) {
-          padding: 1.3rem 1.1rem;
+          padding: 1.15rem 1rem;
           border-radius: 22px;
+        }
+
+        @media (max-height: 700px) {
+          padding: 0.95rem 0.85rem;
+          border-radius: 18px;
         }
 
         opacity: 0;
