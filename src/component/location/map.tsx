@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useRef } from "react"
 import { useKakao, useNaver } from "../store"
 import nmapIcon from "../../icons/nmap-icon.png"
@@ -128,6 +129,7 @@ export const Map = () => {
 const NaverMap = () => {
   const naver = useNaver()
   const ref = useRef<HTMLDivElement>(null)
+  const mapInstanceRef = useRef<any>(null)
 
   // 모바일에서 스크롤 중 지도가 조작되는 것을 방지하기 위한 잠금 상태
   const [locked, setLocked] = useState(true)
@@ -137,28 +139,53 @@ const NaverMap = () => {
   useEffect(() => {
     // 네이버 지도 SDK가 로드되면 지도를 초기화합니다.
     if (naver && ref.current) {
+      const locationLatLng = new naver.maps.LatLng(
+        WEDDING_HALL_POSITION[1],
+        WEDDING_HALL_POSITION[0],
+      )
+
       const map = new naver.maps.Map(ref.current, {
-        center: new naver.maps.LatLng(
-          WEDDING_HALL_POSITION[1],
-          WEDDING_HALL_POSITION[0],
-        ),
-        zoom: 17,
+        center: locationLatLng,
+        zoom: 16,
+        minZoom: 12,
+        maxZoom: 19,
+        scrollWheel: false,
+        draggable: false,
+        pinchZoom: false,
+        zoomControl: false,
       })
+
+      mapInstanceRef.current = map
 
       // 마커 추가
       new naver.maps.Marker({
-        position: new naver.maps.LatLng(
-          WEDDING_HALL_POSITION[1],
-          WEDDING_HALL_POSITION[0],
-        ),
+        position: locationLatLng,
         map,
+        title: `${LOCATION} 2층 그랜드볼룸`,
       })
+
+      // 지도 사이즈 자동 보정
+      setTimeout(() => {
+        window.dispatchEvent(new Event("resize"))
+      }, 200)
 
       return () => {
         map.destroy()
+        mapInstanceRef.current = null
       }
     }
   }, [naver])
+
+  // 잠금/해제 상태에 따라 지도 인터랙션 옵션 변경
+  useEffect(() => {
+    if (mapInstanceRef.current && naver) {
+      mapInstanceRef.current.setOptions({
+        draggable: !locked,
+        pinchZoom: !locked,
+        scrollWheel: !locked,
+      })
+    }
+  }, [locked, naver])
 
   return (
     <div className="map-wrapper">

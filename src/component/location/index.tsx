@@ -50,7 +50,7 @@ export const Location = () => {
             className={`tab-btn ${activeTab === "guro" ? "active" : ""}`}
             onClick={() => setActiveTab("guro")}
           >
-            <span>2호선 구로역</span>
+            <span>2호선 구로디지털단지역</span>
           </button>
           <button
             type="button"
