@@ -74,7 +74,6 @@ export const SECTION_IDS = {
   invitation: "section-invitation",
   weddingDay: "section-wedding-day",
   location: "section-location",
-  information: "section-information",
 } as const
 
 // 신부 정보 설정

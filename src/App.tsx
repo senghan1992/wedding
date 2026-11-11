@@ -5,9 +5,9 @@ import "./App.scss"
 import { BGEffect } from "./component/bgEffect"
 import { Invitation } from "./component/invitation"
 import { WeddingDay } from "./component/weddingDay"
-import { Information } from "./component/information"
 import { ShareButton } from "./component/shareButton"
 import { TopButton } from "./component/topButton"
+import { DonationModal } from "./component/donationModal"
 import { SECTION_IDS } from "./const"
 
 /**
@@ -52,6 +52,8 @@ const PageProgress = () => {
  * @returns {JSX.Element} 애플리케이션 화면
  */
 function App() {
+  const [donationModalOpen, setDonationModalOpen] = useState(false)
+
   return (
     <div className="background">
       {/* 배경 애니메이션 효과 (꽃잎 내리기) */}
@@ -64,7 +66,7 @@ function App() {
       <main className="snap-scroll-viewport">
         {/* 1. 메인 커버 섹션 */}
         <section id={SECTION_IDS.cover} className="snap-page-container">
-          <Cover />
+          <Cover onOpenDonation={() => setDonationModalOpen(true)} />
         </section>
 
         {/* 2. 모시는 글 및 하객 요약 안내 */}
@@ -81,11 +83,6 @@ function App() {
         <section id={SECTION_IDS.location} className="snap-page-container">
           <Location />
         </section>
-
-        {/* 5. 마음 전하실 곳 & 식사 안내 */}
-        <section id={SECTION_IDS.information} className="snap-page-container">
-          <Information />
-        </section>
       </main>
 
       {/* 카카오톡 / 링크 공유 플로팅 버튼 */}
@@ -93,6 +90,12 @@ function App() {
 
       {/* 맨 위로 올라가기 버튼 (왼쪽 고정) */}
       <TopButton />
+
+      {/* 축의금 계좌 안내 모달 (첫 페이지 목차에서 호출) */}
+      <DonationModal
+        open={donationModalOpen}
+        onClose={() => setDonationModalOpen(false)}
+      />
     </div>
   )
 }

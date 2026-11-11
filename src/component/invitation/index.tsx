@@ -81,7 +81,7 @@ export const Invitation = () => {
           <div className="fact-item">
             <span className="fact-label">TIME</span>
             <span className="fact-value">{WEDDING_DATE.format("A h시 m분")}</span>
-            <span className="fact-note">식사 15:00 ~ 17:00 (1층)</span>
+            <span className="fact-note">식 30분 전부터 가능</span>
           </div>
           <div className="fact-item">
             <span className="fact-label">PLACE</span>
@@ -94,6 +94,11 @@ export const Invitation = () => {
             <span className="fact-note">지하주차장 1,400대</span>
           </div>
         </div>
+
+        {/* 식사 안내 단정한 텍스트 문구 */}
+        <p className="dining-guide-text">
+          식사는 예식 30분 전부터 1층 연회장에서 가능합니다
+        </p>
 
         <div className="btn-wrapper">
           <Button

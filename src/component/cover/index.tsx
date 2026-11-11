@@ -21,19 +21,23 @@ const DAY_OF_WEEK = [
 
 /**
  * 커버 목차 항목
- * 각 항목을 누르면 자석 스크롤의 해당 페이지로 이동합니다.
+ * 각 항목을 누르면 해당 섹션으로 스크롤하거나 모달을 오픈합니다.
  */
 const CONTENTS = [
   { label: "모시는 글", targetId: SECTION_IDS.invitation },
   { label: "웨딩 갤러리", targetId: SECTION_IDS.weddingDay },
   { label: "오시는 길", targetId: SECTION_IDS.location },
-  { label: "마음 전하실 곳", targetId: SECTION_IDS.information },
+  { label: "마음 전하실 곳", isModal: true },
 ]
 
 /**
  * 초대장의 메인 커버 섹션입니다.
  */
-export const Cover = () => {
+export const Cover = ({
+  onOpenDonation,
+}: {
+  onOpenDonation?: () => void
+}) => {
   return (
     <LazyDiv className="card cover-editorial">
       {/* 상단 시네마틱 헤더 */}
@@ -72,22 +76,26 @@ export const Cover = () => {
         </div>
       </div>
 
-      {/* 커버 목차 (각 페이지로 바로 이동) */}
+      {/* 커버 목차 (각 페이지로 바로 이동 또는 모달 오픈) */}
       <nav className="cover-contents" aria-label="초대장 목차">
         <span className="contents-label">CONTENTS</span>
         <div className="contents-list">
-          {CONTENTS.map(({ label, targetId }) => (
+          {CONTENTS.map((item) => (
             <button
-              key={targetId}
+              key={item.label}
               type="button"
               className="contents-chip"
               onClick={() => {
-                document
-                  .getElementById(targetId)
-                  ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                if ("isModal" in item && item.isModal) {
+                  onOpenDonation?.()
+                } else if ("targetId" in item && item.targetId) {
+                  document
+                    .getElementById(item.targetId)
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
               }}
             >
-              {label}
+              {item.label}
             </button>
           ))}
         </div>

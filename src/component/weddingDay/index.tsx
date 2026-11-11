@@ -1,9 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react"
-import {
-  BRIDE_FIRSTNAME,
-  GROOM_FIRSTNAME,
-  WEDDING_DATE,
-} from "../../const"
+import { useRef, useState } from "react"
 import { GALLERY_IMAGES } from "../../images"
 import { LazyDiv } from "../lazyDiv"
 import { Button } from "../button"
@@ -11,12 +6,11 @@ import { AllPhotosModal } from "../gallery"
 import "./index.scss"
 
 /**
- * Our Moments (웨딩 갤러리 & D-Day) 섹션입니다.
+ * Our Moments (웨딩 갤러리) 섹션입니다.
  * 두 사람의 웨딩 화보가 주인공이 되는 감성 갤러리 공간으로,
- * 사진을 감상하면서 두 사람의 특별한 날(D-Day)까지의 설렘을 함께 느낄 수 있도록 구성했습니다.
+ * 사진을 여유롭고 몰입감 있게 감상할 수 있도록 구성했습니다.
  */
 export const WeddingDay = () => {
-  const [tsDiff, setTsDiff] = useState(WEDDING_DATE.diff())
   const [photoModalState, setPhotoModalState] = useState(false)
   const [currentIdx, setCurrentIdx] = useState(0)
 
@@ -26,19 +20,6 @@ export const WeddingDay = () => {
   const touchStartRef = useRef<{ x: number; y: number } | null>(null)
   const isHorizontalSwipeRef = useRef<boolean | null>(null)
   const hasMovedRef = useRef(false)
-
-  const dayDiff = useMemo(() => {
-    const dayOffset = WEDDING_DATE.diff(WEDDING_DATE.startOf("day"))
-    return Math.ceil((tsDiff - dayOffset) / 1000 / 60 / 60 / 24)
-  }, [tsDiff])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTsDiff(WEDDING_DATE.diff())
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [])
 
   const nextPhoto = (e?: React.MouseEvent) => {
     e?.stopPropagation()
@@ -117,26 +98,13 @@ export const WeddingDay = () => {
   return (
     <>
       <LazyDiv className="card wedding-moments-card">
-        {/* 1. 상단 갤러리 헤더 & 서사적 D-Day 배지 */}
+        {/* 1. 상단 갤러리 헤더 */}
         <div className="moments-header">
           <span className="script-subtitle">Our Moments</span>
           <h2 className="moments-title">웨딩 갤러리</h2>
           <p className="moments-desc">
             함께 걸어갈 두 사람의 찬란한 순간들
           </p>
-
-          <div className="moments-dday-badge">
-            <span className="badge-dday">
-              {dayDiff > 0
-                ? `D-${dayDiff}`
-                : dayDiff === 0
-                  ? "D-DAY"
-                  : `D+${Math.abs(dayDiff)}`}
-            </span>
-            <span className="badge-text">
-              {WEDDING_DATE.format("YYYY. MM. DD")} · {GROOM_FIRSTNAME} & {BRIDE_FIRSTNAME}
-            </span>
-          </div>
         </div>
 
         {/* 2. 대화면 웨딩 화보 쇼케이스 (매끄러운 슬라이딩 트랙) */}
@@ -177,12 +145,6 @@ export const WeddingDay = () => {
               })}
             </div>
 
-            {/* 상단 탭 힌트 오버레이 */}
-            <div className="tap-hint-pill">
-              <span className="zoom-icon">⤢</span>
-              <span>탭하여 크게 보기</span>
-            </div>
-
             {/* 좌우 넘김 버튼 */}
             {GALLERY_IMAGES.length > 1 && (
               <>
@@ -205,21 +167,18 @@ export const WeddingDay = () => {
               </>
             )}
 
-            {/* 하단 인디케이터 바 */}
+            {/* 하단 인디케이터 바 (프로그레스 바 & 카운터) */}
             <div
               className="photo-indicator-bar"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="indicator-dots">
-                {GALLERY_IMAGES.map((_, idx) => (
-                  <button
-                    type="button"
-                    key={idx}
-                    className={`dot ${idx === currentIdx ? "active" : ""}`}
-                    onClick={() => setCurrentIdx(idx)}
-                    aria-label={`${idx + 1}번째 사진`}
-                  />
-                ))}
+              <div className="photo-progress-track">
+                <div
+                  className="photo-progress-fill"
+                  style={{
+                    width: `${((currentIdx + 1) / GALLERY_IMAGES.length) * 100}%`,
+                  }}
+                />
               </div>
               <span className="count-pill">
                 {currentIdx + 1} / {GALLERY_IMAGES.length}
